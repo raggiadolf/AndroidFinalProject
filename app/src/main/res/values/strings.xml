@@ -4,4 +4,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_moves_game">MovesGameActivity</string>
+    <string name="title_activity_high_score">HighScoreActivity</string>
+    <string name="title_activity_power_ups">PowerUpsActivity</string>
 </resources>

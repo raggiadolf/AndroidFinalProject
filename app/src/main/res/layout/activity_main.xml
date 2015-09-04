@@ -10,8 +10,41 @@
         android:layout_height="wrap_content"
         android:text="Moves"
         android:id="@+id/startMovesGame"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="startMovesGame"/>
+        android:onClick="startMovesGame"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="160dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Timed"
+        android:id="@+id/startTimedGame"
+        android:onClick="startMovesGame"
+        android:layout_alignTop="@+id/startMovesGame"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="High Score"
+        android:id="@+id/highScoreButton"
+        android:onClick="viewHighScores"
+        android:layout_marginTop="89dp"
+        android:layout_below="@+id/startTimedGame"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Power ups"
+        android:id="@+id/powerUpsButton"
+        android:onClick="powerUps"
+        android:layout_alignTop="@+id/highScoreButton"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

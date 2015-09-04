@@ -37,8 +37,33 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Starts a game
+     * TODO: Be able to tell the intent what kind of game it is, moves/timed
+     * @param view
+     */
     public void startMovesGame(View view) {
         Intent intent = new Intent(this, MovesGameActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * Views the highscores
+     * TODO: Figure out how to store the high scores in local storage.
+     * @param view
+     */
+    public void viewHighScores(View view) {
+        Intent intent = new Intent(this, HighScoreActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * Shows a list of usable power ups
+     * TODO: Figure out a list of power ups
+     * @param view
+     */
+    public void powerUps(View view) {
+        Intent intent = new Intent(this, PowerUpsActivity.class);
         startActivity(intent);
     }
 }

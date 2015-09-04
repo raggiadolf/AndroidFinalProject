@@ -20,6 +20,14 @@
             android:name=".MovesGameActivity"
             android:label="@string/title_activity_moves_game" >
         </activity>
+        <activity
+            android:name=".HighScoreActivity"
+            android:label="@string/title_activity_high_score" >
+        </activity>
+        <activity
+            android:name=".PowerUpsActivity"
+            android:label="@string/title_activity_power_ups" >
+        </activity>
     </application>
 
 </manifest>
