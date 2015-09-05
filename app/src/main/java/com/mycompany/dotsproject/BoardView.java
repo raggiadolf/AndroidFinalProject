@@ -151,6 +151,9 @@ public class BoardView extends View {
                 invalidate();
             }
         } else if(event.getAction() == MotionEvent.ACTION_UP) {
+            for(Point p : m_cellPath) {
+                m_board.get(p.y).set(p.x, null);
+            }
             m_cellPath.clear();
             invalidate();
         }
@@ -178,7 +181,7 @@ public class BoardView extends View {
         for(int row = 0; row < NUM_CELLS; row++) {
             for(int col = 0; col < NUM_CELLS; col++) {
                 if(m_board.get(row).get(col) == null) {
-                    m_board.get(row).add(col, m_dotColors.get(new Random().nextInt(m_dotColors.size())));
+                    m_board.get(row).set(col, m_dotColors.get(new Random().nextInt(m_dotColors.size())));
                 }
             }
         }
