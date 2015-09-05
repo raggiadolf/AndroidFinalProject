@@ -12,8 +12,10 @@ import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +29,6 @@ public class BoardView extends View {
     private final int NUM_CELLS = 6;
     private int m_cellWidth;
     private int m_cellHeight;
-    private boolean m_moving = false;
 
     private Rect m_rect       = new Rect();
     private Paint m_rectPaint = new Paint();
@@ -108,11 +109,43 @@ public class BoardView extends View {
                 canvas.drawOval(m_dot, m_dotPaint);
             }
         }
+
+        if(!m_cellPath.isEmpty()) {
+            m_path.reset();
+            Point point = m_cellPath.get(0);
+            m_path.moveTo(colToX(point.x) + (m_cellWidth / 2), rowToY(point.y) + (m_cellHeight / 2));
+
+            for(int i = 1; i < m_cellPath.size(); i++) {
+                point = m_cellPath.get(i);
+                m_path.lineTo(colToX(point.x) + (m_cellWidth / 2), rowToY(point.y) + (m_cellHeight / 2));
+            }
+
+            canvas.drawPath(m_path, m_pathPaint);
+        }
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        return false;
+        int x = (int) event.getX();
+        int y = (int) event.getY();
+
+        if(event.getAction() == MotionEvent.ACTION_DOWN) {
+            m_cellPath.add(new Point(xToCol(x), yToRow(y)));
+        } else if(event.getAction() == MotionEvent.ACTION_MOVE) {
+            if(!m_cellPath.isEmpty()) {
+                int col = xToCol(x);
+                int row = yToRow(y);
+                Point last = m_cellPath.get(m_cellPath.size() - 1);
+                if(col != last.x || row != last.y) {
+                    m_cellPath.add(new Point(col, row));
+                }
+                invalidate();
+            }
+        } else if(event.getAction() == MotionEvent.ACTION_UP) {
+            m_cellPath.clear();
+            invalidate();
+        }
+        return true;
     }
 
     /**
