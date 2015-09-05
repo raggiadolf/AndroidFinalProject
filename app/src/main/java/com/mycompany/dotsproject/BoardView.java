@@ -43,6 +43,8 @@ public class BoardView extends View {
 
     private List<Integer> m_dotColors = new ArrayList<>();
 
+    private List<ArrayList<Integer>> m_board = new ArrayList<>();
+
     public BoardView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -62,6 +64,7 @@ public class BoardView extends View {
         m_pathPaint.setAntiAlias(true);
 
         m_dotColors = getColors();
+        m_board = setStartingBoard();
     }
 
     @Override
@@ -105,7 +108,7 @@ public class BoardView extends View {
                 m_dot.offset(getPaddingLeft(), getPaddingTop());
                 m_dot.inset(m_cellWidth * 0.1f, m_cellHeight * 0.1f);
 
-                m_dotPaint.setColor(m_dotColors.get(new Random().nextInt(m_dotColors.size()))); // TODO: Instantiate random somewhere else
+                m_dotPaint.setColor(m_board.get(row).get(col));
                 canvas.drawOval(m_dot, m_dotPaint);
             }
         }
@@ -161,6 +164,17 @@ public class BoardView extends View {
         colors.add(Color.GREEN);
 
         return colors;
+    }
+
+    private ArrayList<ArrayList<Integer>> setStartingBoard() {
+        ArrayList<ArrayList<Integer>> board = new ArrayList<>();
+        for(int row = 0; row < NUM_CELLS; row++) {
+            board.add(new ArrayList<Integer>());
+            for(int col = 0; col < NUM_CELLS; col++) {
+                board.get(row).add(col, m_dotColors.get(new Random().nextInt(m_dotColors.size())));
+            }
+        }
+        return board;
     }
 
     private int xToCol(int x) {
