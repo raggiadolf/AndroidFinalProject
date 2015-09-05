@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
@@ -20,8 +21,16 @@ public class BoardView extends View {
     private int m_cellWidth;
     private int m_cellHeight;
 
+    private Rect m_rect = new Rect();
+    private Paint m_rectPaint = new Paint();
+
     public BoardView(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        m_rectPaint.setColor(Color.BLACK);
+        m_rectPaint.setStyle(Paint.Style.STROKE);
+        m_rectPaint.setStrokeWidth(2);
+        m_rectPaint.setAntiAlias(true);
     }
 
     @Override
@@ -51,17 +60,9 @@ public class BoardView extends View {
      */
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+        canvas.drawRect(m_rect, m_rectPaint);
 
-        // TODO: consider storing these as member variables to reduce
-        // allocations per draw cycle.
-        int paddingLeft = getPaddingLeft();
-        int paddingTop = getPaddingTop();
-        int paddingRight = getPaddingRight();
-        int paddingBottom = getPaddingBottom();
 
-        int contentWidth = getWidth() - paddingLeft - paddingRight;
-        int contentHeight = getHeight() - paddingTop - paddingBottom;
     }
 
     @Override
