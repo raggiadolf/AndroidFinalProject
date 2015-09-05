@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#A0E0A0"
-        android:padding="10pt"
+        android:padding="1pt"
         android:layout_margin="10pt"
         />
 

@@ -62,7 +62,15 @@ public class BoardView extends View {
     protected void onDraw(Canvas canvas) {
         canvas.drawRect(m_rect, m_rectPaint);
 
-
+        for(int row = 0; row < NUM_CELLS; row++) {
+            for(int col = 0; col < NUM_CELLS; col++) {
+                int x = col * m_cellWidth;
+                int y = row * m_cellHeight;
+                m_rect.set(x, y, x + m_cellWidth, y + m_cellHeight);
+                m_rect.offset(getPaddingLeft(), getPaddingTop());
+                canvas.drawRect(m_rect, m_rectPaint);
+            }
+        }
     }
 
     @Override
