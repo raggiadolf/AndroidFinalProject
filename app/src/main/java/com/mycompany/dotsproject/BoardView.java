@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
@@ -26,6 +27,7 @@ public class BoardView extends View {
     private final int NUM_CELLS = 6;
     private int m_cellWidth;
     private int m_cellHeight;
+    private boolean m_moving = false;
 
     private Rect m_rect       = new Rect();
     private Paint m_rectPaint = new Paint();
@@ -35,6 +37,8 @@ public class BoardView extends View {
 
     private Path m_path       = new Path();
     private Paint m_pathPaint = new Paint();
+
+    private List<Point> m_cellPath = new ArrayList<Point>();
 
     private List<Integer> m_dotColors = new ArrayList<>();
 
