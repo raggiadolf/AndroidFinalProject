@@ -16,6 +16,10 @@ import android.view.View;
  */
 public class BoardView extends View {
 
+    private final int NUM_CELLS = 6;
+    private int m_cellWidth;
+    private int m_cellHeight;
+
     public BoardView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
@@ -33,7 +37,11 @@ public class BoardView extends View {
 
     @Override
     protected void onSizeChanged(int xNew, int yNew, int xOld, int yOld) {
+        int boardWidth = (xNew - getPaddingLeft() - getPaddingRight());
+        int boardHeight = (yNew - getPaddingTop() - getPaddingBottom());
 
+        m_cellWidth = boardWidth / NUM_CELLS;
+        m_cellHeight = boardHeight / NUM_CELLS;
     }
 
 
