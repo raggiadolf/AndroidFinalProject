@@ -15,14 +15,6 @@ import android.view.View;
  * TODO: document your custom view class.
  */
 public class BoardView extends View {
-    /*private String mExampleString; // TODO: use a default from R.string...
-    private int mExampleColor = Color.RED; // TODO: use a default from R.color...
-    private float mExampleDimension = 0; // TODO: use a default from R.dimen...
-    private Drawable mExampleDrawable;
-
-    private TextPaint mTextPaint;
-    private float mTextWidth;
-    private float mTextHeight;*/
 
     public BoardView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -31,6 +23,12 @@ public class BoardView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        int width  = getMeasuredWidth() - getPaddingLeft() - getPaddingRight();
+        int height = getMeasuredHeight() - getPaddingTop() - getPaddingBottom();
+        int size = Math.min(width, height);
+        setMeasuredDimension(size + getPaddingLeft() + getPaddingRight(),
+                size + getPaddingTop() + getPaddingBottom());
     }
 
     @Override
@@ -38,6 +36,11 @@ public class BoardView extends View {
 
     }
 
+
+    /**
+     * TODO: Draw the grid which will hold our dots.
+     * @param canvas
+     */
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
