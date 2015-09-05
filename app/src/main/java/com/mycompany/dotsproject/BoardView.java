@@ -6,11 +6,16 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * TODO: document your custom view class.
@@ -24,6 +29,11 @@ public class BoardView extends View {
     private Rect m_rect = new Rect();
     private Paint m_rectPaint = new Paint();
 
+    private RectF m_dot = new RectF();
+    private Paint m_dotPaint = new Paint();
+
+    private List<Integer> m_dotColors = new ArrayList<>();
+
     public BoardView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -31,6 +41,14 @@ public class BoardView extends View {
         m_rectPaint.setStyle(Paint.Style.STROKE);
         m_rectPaint.setStrokeWidth(2);
         m_rectPaint.setAntiAlias(true);
+
+        m_dotPaint.setStyle(Paint.Style.FILL);
+        m_dotPaint.setAntiAlias(true);
+
+        /**
+         * TODO: Figure out how to select different colors based on theme/difficulty
+         */
+        m_dotColors = getColors();
     }
 
     @Override
@@ -60,7 +78,7 @@ public class BoardView extends View {
      */
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.drawRect(m_rect, m_rectPaint);
+        // canvas.drawRect(m_rect, m_rectPaint);
 
         for(int row = 0; row < NUM_CELLS; row++) {
             for(int col = 0; col < NUM_CELLS; col++) {
@@ -69,6 +87,13 @@ public class BoardView extends View {
                 m_rect.set(x, y, x + m_cellWidth, y + m_cellHeight);
                 m_rect.offset(getPaddingLeft(), getPaddingTop());
                 canvas.drawRect(m_rect, m_rectPaint);
+
+                m_dot.set(x, y, x + m_cellWidth, y + m_cellHeight);
+                m_dot.offset(getPaddingLeft(), getPaddingTop());
+                m_dot.inset(m_cellWidth * 0.1f, m_cellHeight * 0.1f);
+
+                m_dotPaint.setColor(m_dotColors.get(new Random().nextInt(m_dotColors.size())));
+                canvas.drawOval(m_dot, m_dotPaint);
             }
         }
     }
@@ -76,5 +101,20 @@ public class BoardView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         return false;
+    }
+
+    /**
+     * TODO: We should make this method take in an indicator of difficulty and theme
+     * and then choose the colors based off of that.
+     * @return A list of integers which represent colors.
+     */
+    private ArrayList<Integer> getColors() {
+        ArrayList<Integer> colors = new ArrayList<>();
+
+        colors.add(Color.BLUE);
+        colors.add(Color.RED);
+        colors.add(Color.GREEN);
+
+        return colors;
     }
 }
