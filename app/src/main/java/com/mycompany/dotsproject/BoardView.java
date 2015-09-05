@@ -142,6 +142,7 @@ public class BoardView extends View {
                 int row = yToRow(y);
                 Point last = m_cellPath.get(m_cellPath.size() - 1);
 
+
                 if (!m_cellPath.contains(new Point(col, row))
                         && checkIfCellIsLegal(row, col, last.y, last.x)) {
                     m_cellPath.add(new Point(col, row));
@@ -214,7 +215,8 @@ public class BoardView extends View {
     }
 
     private boolean checkIfCellIsLegal(int currRow, int currCol, int lastRow, int lastCol) {
-        return m_board.get(currRow).get(currCol).equals(m_board.get(lastRow).get(lastCol))
+        return currRow < NUM_CELLS && currRow >= 0 && currCol < NUM_CELLS && currCol >= 0
+                && m_board.get(currRow).get(currCol).equals(m_board.get(lastRow).get(lastCol))
                 && ((Math.abs(currRow - lastRow) == 1 && currCol == lastCol)
                 || (Math.abs(currCol - lastCol) == 1 && currRow == lastRow));
     }
