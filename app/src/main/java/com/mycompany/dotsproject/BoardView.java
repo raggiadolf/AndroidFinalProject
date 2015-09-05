@@ -1,7 +1,6 @@
 package com.mycompany.dotsproject;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -9,13 +8,10 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
-import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +35,7 @@ public class BoardView extends View {
     private Path m_path       = new Path();
     private Paint m_pathPaint = new Paint();
 
-    private List<Point> m_cellPath = new ArrayList<Point>();
+    private List<Point> m_cellPath = new ArrayList<>();
 
     private List<Integer> m_dotColors = new ArrayList<>();
 
@@ -146,22 +142,17 @@ public class BoardView extends View {
                 int row = yToRow(y);
                 Point last = m_cellPath.get(m_cellPath.size() - 1);
 
-                if(!m_cellPath.contains(new Point(col, row))
-                        && col < NUM_CELLS && row < NUM_CELLS) {
-                    if(m_board.get(row).get(col).equals(m_board.get(last.y).get(last.x))) {
-                        if ((Math.abs(row - last.y) == 1 && col == last.x)
-                                || (Math.abs(col - last.x) == 1 && row == last.y)) {
-
-                            m_cellPath.add(new Point(col, row));
-
-                        }
-                    }
+                if (!m_cellPath.contains(new Point(col, row))
+                        && checkIfCellIsLegal(row, col, last.y, last.x)) {
+                    m_cellPath.add(new Point(col, row));
                 }
                 invalidate();
             }
         } else if(event.getAction() == MotionEvent.ACTION_UP) {
-            for(Point p : m_cellPath) {
-                m_board.get(p.y).set(p.x, null);
+            if(m_cellPath.size() > 1) {
+                for (Point p : m_cellPath) {
+                    m_board.get(p.y).set(p.x, null);
+                }
             }
             m_cellPath.clear();
             invalidate();
@@ -220,5 +211,11 @@ public class BoardView extends View {
         int y = rowToY(row) + (int) (m_cellHeight - circle.height()) / 2;
 
         circle.offsetTo(x, y);
+    }
+
+    private boolean checkIfCellIsLegal(int currRow, int currCol, int lastRow, int lastCol) {
+        return m_board.get(currRow).get(currCol).equals(m_board.get(lastRow).get(lastCol))
+                && ((Math.abs(currRow - lastRow) == 1 && currCol == lastCol)
+                || (Math.abs(currCol - lastCol) == 1 && currRow == lastRow));
     }
 }
