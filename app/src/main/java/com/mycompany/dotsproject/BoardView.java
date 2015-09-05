@@ -64,7 +64,13 @@ public class BoardView extends View {
         m_pathPaint.setAntiAlias(true);
 
         m_dotColors = getColors();
-        m_board = setStartingBoard();
+
+        for(int row = 0; row < NUM_CELLS; row++) {
+            m_board.add(new ArrayList<Integer>());
+            for(int col = 0; col < NUM_CELLS; col++) {
+                m_board.get(row).add(col, null);
+            }
+        }
     }
 
     @Override
@@ -94,7 +100,7 @@ public class BoardView extends View {
      */
     @Override
     protected void onDraw(Canvas canvas) {
-        // canvas.drawRect(m_rect, m_rectPaint);
+        updateBoard();
 
         for(int row = 0; row < NUM_CELLS; row++) {
             for(int col = 0; col < NUM_CELLS; col++) {
@@ -162,19 +168,20 @@ public class BoardView extends View {
         colors.add(Color.BLUE);
         colors.add(Color.RED);
         colors.add(Color.GREEN);
+        colors.add(Color.YELLOW);
+        colors.add(Color.CYAN);
 
         return colors;
     }
 
-    private ArrayList<ArrayList<Integer>> setStartingBoard() {
-        ArrayList<ArrayList<Integer>> board = new ArrayList<>();
+    private void updateBoard() {
         for(int row = 0; row < NUM_CELLS; row++) {
-            board.add(new ArrayList<Integer>());
             for(int col = 0; col < NUM_CELLS; col++) {
-                board.get(row).add(col, m_dotColors.get(new Random().nextInt(m_dotColors.size())));
+                if(m_board.get(row).get(col) == null) {
+                    m_board.get(row).add(col, m_dotColors.get(new Random().nextInt(m_dotColors.size())));
+                }
             }
         }
-        return board;
     }
 
     private int xToCol(int x) {
