@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
@@ -26,11 +27,14 @@ public class BoardView extends View {
     private int m_cellWidth;
     private int m_cellHeight;
 
-    private Rect m_rect = new Rect();
+    private Rect m_rect       = new Rect();
     private Paint m_rectPaint = new Paint();
 
-    private RectF m_dot = new RectF();
+    private RectF m_dot      = new RectF();
     private Paint m_dotPaint = new Paint();
+
+    private Path m_path       = new Path();
+    private Paint m_pathPaint = new Paint();
 
     private List<Integer> m_dotColors = new ArrayList<>();
 
@@ -45,9 +49,13 @@ public class BoardView extends View {
         m_dotPaint.setStyle(Paint.Style.FILL);
         m_dotPaint.setAntiAlias(true);
 
-        /**
-         * TODO: Figure out how to select different colors based on theme/difficulty
-         */
+        m_pathPaint.setColor(Color.BLACK); // TODO: Do this in getColors() instead?
+        m_pathPaint.setStrokeWidth(10);
+        m_pathPaint.setStrokeJoin(Paint.Join.ROUND);
+        m_pathPaint.setStrokeCap(Paint.Cap.ROUND);
+        m_pathPaint.setStyle(Paint.Style.STROKE);
+        m_pathPaint.setAntiAlias(true);
+
         m_dotColors = getColors();
     }
 
@@ -73,7 +81,7 @@ public class BoardView extends View {
 
 
     /**
-     * TODO: Draw the grid which will hold our dots.
+     *
      * @param canvas
      */
     @Override
@@ -92,7 +100,7 @@ public class BoardView extends View {
                 m_dot.offset(getPaddingLeft(), getPaddingTop());
                 m_dot.inset(m_cellWidth * 0.1f, m_cellHeight * 0.1f);
 
-                m_dotPaint.setColor(m_dotColors.get(new Random().nextInt(m_dotColors.size())));
+                m_dotPaint.setColor(m_dotColors.get(new Random().nextInt(m_dotColors.size()))); // TODO: Instantiate random somewhere else
                 canvas.drawOval(m_dot, m_dotPaint);
             }
         }
@@ -116,5 +124,31 @@ public class BoardView extends View {
         colors.add(Color.GREEN);
 
         return colors;
+    }
+
+    private int xToCol(int x) {
+        return (x - getPaddingLeft()) / m_cellWidth;
+    }
+
+    private int yToRow(int y) {
+        return (y - getPaddingTop()) / m_cellHeight;
+    }
+
+    private int colToX(int col) {
+        return col * m_cellWidth + getPaddingLeft();
+    }
+
+    private int rowToY(int row) {
+        return row * m_cellHeight + getPaddingTop();
+    }
+
+    private void snapToGrid(RectF circle) {
+        int col = xToCol((int)circle.left);
+        int row = yToRow((int)circle.top);
+
+        int x = colToX(col) + (int) (m_cellWidth - circle.width()) / 2;
+        int y = rowToY(row) + (int) (m_cellHeight - circle.height()) / 2;
+
+        circle.offsetTo(x, y);
     }
 }
