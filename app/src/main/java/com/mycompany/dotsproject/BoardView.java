@@ -204,16 +204,6 @@ public class BoardView extends View {
         return row * m_cellHeight + getPaddingTop();
     }
 
-    private void snapToGrid(RectF circle) {
-        int col = xToCol((int)circle.left);
-        int row = yToRow((int)circle.top);
-
-        int x = colToX(col) + (int) (m_cellWidth - circle.width()) / 2;
-        int y = rowToY(row) + (int) (m_cellHeight - circle.height()) / 2;
-
-        circle.offsetTo(x, y);
-    }
-
     private boolean checkIfCellIsLegal(int currRow, int currCol, int lastRow, int lastCol) {
         return currRow < NUM_CELLS && currRow >= 0 && currCol < NUM_CELLS && currCol >= 0
                 && m_board.get(currRow).get(currCol).equals(m_board.get(lastRow).get(lastCol))
