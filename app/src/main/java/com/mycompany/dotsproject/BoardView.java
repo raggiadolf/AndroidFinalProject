@@ -145,8 +145,17 @@ public class BoardView extends View {
                 int col = xToCol(x);
                 int row = yToRow(y);
                 Point last = m_cellPath.get(m_cellPath.size() - 1);
-                if(col != last.x || row != last.y) {
-                    m_cellPath.add(new Point(col, row));
+
+                if(!m_cellPath.contains(new Point(col, row))
+                        && col < NUM_CELLS && row < NUM_CELLS) {
+                    if(m_board.get(row).get(col).equals(m_board.get(last.y).get(last.x))) {
+                        if ((Math.abs(row - last.y) == 1 && col == last.x)
+                                || (Math.abs(col - last.x) == 1 && row == last.y)) {
+
+                            m_cellPath.add(new Point(col, row));
+
+                        }
+                    }
                 }
                 invalidate();
             }
