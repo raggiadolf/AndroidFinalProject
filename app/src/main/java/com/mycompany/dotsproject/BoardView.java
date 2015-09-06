@@ -28,6 +28,7 @@ public class BoardView extends View {
     private int m_cellWidth;
     private int m_cellHeight;
     private int m_moveCount = 10;
+    private int m_scoreCount = 0;
 
     private Rect m_rect       = new Rect();
     private Paint m_rectPaint = new Paint();
@@ -102,6 +103,7 @@ public class BoardView extends View {
         if(m_moveCount <= 0) {
             // TODO: User is out of moves, display an overlay with his final score. freeze the board.
         }
+
         updateBoard();
 
         for(int row = 0; row < NUM_CELLS; row++) {
@@ -170,6 +172,7 @@ public class BoardView extends View {
             if(m_cellPath.size() > 1) {
                 for (Point p : m_cellPath) {
                     m_board.get(p.y).set(p.x, null);
+                    m_scoreCount++;
                 }
                 m_moveCount--;
             }
