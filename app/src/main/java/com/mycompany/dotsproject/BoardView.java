@@ -9,9 +9,11 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+
+import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,7 @@ public class BoardView extends View {
     private final int NUM_CELLS = 6;
     private int m_cellWidth;
     private int m_cellHeight;
+    private int m_moveCount = 10;
 
     private Rect m_rect       = new Rect();
     private Paint m_rectPaint = new Paint();
@@ -91,11 +94,14 @@ public class BoardView extends View {
 
 
     /**
-     *
+     * TODO: Document, too much logic?
      * @param canvas
      */
     @Override
     protected void onDraw(Canvas canvas) {
+        if(m_moveCount <= 0) {
+            // TODO: User is out of moves, display an overlay with his final score. freeze the board.
+        }
         updateBoard();
 
         for(int row = 0; row < NUM_CELLS; row++) {
@@ -129,6 +135,11 @@ public class BoardView extends View {
         }
     }
 
+    /**
+     * TODO: DOCUMENT!
+     * @param event
+     * @return
+     */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int x = (int) event.getX();
@@ -160,6 +171,7 @@ public class BoardView extends View {
                 for (Point p : m_cellPath) {
                     m_board.get(p.y).set(p.x, null);
                 }
+                m_moveCount--;
             }
             m_cellPath.clear();
             invalidate();
@@ -168,7 +180,7 @@ public class BoardView extends View {
     }
 
     /**
-     * TODO: We should make this method take in an indicator of difficulty and theme
+     * TODO: We should make this method take in an indicator of theme
      * and then choose the colors based off of that.
      * @return A list of integers which represent colors.
      */
