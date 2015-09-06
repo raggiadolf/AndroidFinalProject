@@ -136,20 +136,26 @@ public class BoardView extends View {
 
         if(event.getAction() == MotionEvent.ACTION_DOWN) {
             m_cellPath.add(new Point(xToCol(x), yToRow(y)));
-        } else if(event.getAction() == MotionEvent.ACTION_MOVE) {
+        }
+        else if(event.getAction() == MotionEvent.ACTION_MOVE) {
             if(!m_cellPath.isEmpty()) {
                 int col = xToCol(x);
                 int row = yToRow(y);
                 Point last = m_cellPath.get(m_cellPath.size() - 1);
 
-
                 if (!m_cellPath.contains(new Point(col, row))
                         && checkIfCellIsLegal(row, col, last.y, last.x)) {
                     m_cellPath.add(new Point(col, row));
+                } else if(m_cellPath.size() > 1){ // Remove if backtracking
+                    Point secondToLast = m_cellPath.get(m_cellPath.size() - 2);
+                    if(row == secondToLast.y && col == secondToLast.x) {
+                        m_cellPath.remove(m_cellPath.size() - 1);
+                    }
                 }
                 invalidate();
             }
-        } else if(event.getAction() == MotionEvent.ACTION_UP) {
+        }
+        else if(event.getAction() == MotionEvent.ACTION_UP) {
             if(m_cellPath.size() > 1) {
                 for (Point p : m_cellPath) {
                     m_board.get(p.y).set(p.x, null);
