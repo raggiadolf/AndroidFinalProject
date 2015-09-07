@@ -1,16 +1,48 @@
 package com.mycompany.dotsproject;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.ListView;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
 public class HighScoreActivity extends AppCompatActivity {
+    private ListView m_listView;
+
+    private ArrayList<Record> m_data = new ArrayList<>();
+    private RecordAdapter m_adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_high_score);
+
+        m_listView = (ListView) findViewById(R.id.records);
+
+        m_adapter = new RecordAdapter(this, m_data);
+        m_listView.setAdapter(m_adapter);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        readRecords();
+        m_adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        writeRecords();
     }
 
     @Override
@@ -33,5 +65,35 @@ public class HighScoreActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void writeRecords() {
+        try {
+            FileOutputStream fos = openFileOutput("records.ser", Context.MODE_PRIVATE);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(m_data);
+            oos.close();
+            fos.close();
+        } catch(IOException ex) {
+            // TODO: Handle exception
+        }
+    }
+
+    private void readRecords() {
+        try {
+            FileInputStream fis = openFileInput("records.ser");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            ArrayList<Record> records = (ArrayList) ois.readObject();
+            ois.close();
+            fis.close();
+            m_data.clear();
+            for(Record r : records) {
+                m_data.add(r);
+            }
+        } catch(IOException ioex) {
+            // TODO: Handle IOException
+        } catch(ClassNotFoundException ex) {
+            // TODO: Handle ClassNotFoundException
+        }
     }
 }
