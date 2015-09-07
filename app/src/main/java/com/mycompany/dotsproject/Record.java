@@ -3,6 +3,9 @@ package com.mycompany.dotsproject;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * This class represents a record in our storage, which holds our high scores.
+ */
 public class Record implements Serializable {
     private String m_name;
     private int m_score;
