@@ -127,9 +127,9 @@ public class BoardView extends View {
             for(int col = 0; col < NUM_CELLS; col++) {
                 int x = col * m_cellWidth;
                 int y = row * m_cellHeight;
-                m_rect.set(x, y, x + m_cellWidth, y + m_cellHeight);
-                m_rect.offset(getPaddingLeft(), getPaddingTop());
-                canvas.drawRect(m_rect, m_rectPaint);
+                //m_rect.set(x, y, x + m_cellWidth, y + m_cellHeight);
+                //m_rect.offset(getPaddingLeft(), getPaddingTop());
+                //canvas.drawRect(m_rect, m_rectPaint);
 
                 m_dot.set(x, y, x + m_cellWidth, y + m_cellHeight);
                 m_dot.offset(getPaddingLeft(), getPaddingTop());
@@ -196,7 +196,7 @@ public class BoardView extends View {
             m_cellPath.clear();
 
             if(m_moveCount <= 0) {
-                // TODO: User is out of moves, display an overlay with his final score. freeze the board.
+                // TODO: User is out of moves, display an overlay(or a new activity?) with his final score. freeze the board.
                 Toast.makeText(getContext(), "new top score: " + m_scoreCount, Toast.LENGTH_SHORT).show();
 
                 readRecords();

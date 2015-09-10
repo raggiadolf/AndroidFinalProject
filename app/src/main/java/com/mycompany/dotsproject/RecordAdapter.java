@@ -24,16 +24,13 @@ public class RecordAdapter extends ArrayAdapter<Record> {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.row_layout, parent, false);
 
-        /**
-         * Setup the view for our high-score table
-         */
-
         TextView nameView = (TextView) rowView.findViewById(R.id.name);
         nameView.setText(values.get(position).getName());
 
         TextView scoreView = (TextView) rowView.findViewById(R.id.score);
         scoreView.setText("" + values.get(position).getScore());
 
+        // TODO: Format the date
         TextView dateView = (TextView) rowView.findViewById(R.id.date);
         dateView.setText(values.get(position).getDate().toString());
 
