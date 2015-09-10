@@ -3,6 +3,7 @@ package com.mycompany.dotsproject;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -42,7 +43,7 @@ public class HighScoreActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        writeRecords();
+        //writeRecords(); Probably not needed?
     }
 
     @Override

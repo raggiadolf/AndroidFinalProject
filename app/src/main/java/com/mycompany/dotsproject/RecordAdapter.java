@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -26,6 +27,15 @@ public class RecordAdapter extends ArrayAdapter<Record> {
         /**
          * Setup the view for our high-score table
          */
+
+        TextView nameView = (TextView) rowView.findViewById(R.id.name);
+        nameView.setText(values.get(position).getName());
+
+        TextView scoreView = (TextView) rowView.findViewById(R.id.score);
+        scoreView.setText("" + values.get(position).getScore());
+
+        TextView dateView = (TextView) rowView.findViewById(R.id.date);
+        dateView.setText(values.get(position).getDate().toString());
 
         return rowView;
     }

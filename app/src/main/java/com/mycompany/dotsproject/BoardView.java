@@ -12,10 +12,15 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import android.util.Log;
 import android.widget.Toast;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -27,7 +32,7 @@ public class BoardView extends View {
     private final int NUM_CELLS = 6;
     private int m_cellWidth;
     private int m_cellHeight;
-    private int m_moveCount = 10;
+    private int m_moveCount = 5;
     private int m_scoreCount = 0;
 
     private Rect m_rect       = new Rect();
@@ -44,6 +49,8 @@ public class BoardView extends View {
     private List<Integer> m_dotColors = new ArrayList<>();
 
     private List<ArrayList<Integer>> m_board = new ArrayList<>();
+
+    private ArrayList<Record> m_highScoreList = new ArrayList<>();
 
     public BoardView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -71,6 +78,8 @@ public class BoardView extends View {
                 m_board.get(row).add(col, null);
             }
         }
+
+        updateBoard();
     }
 
     @Override
@@ -100,11 +109,19 @@ public class BoardView extends View {
      */
     @Override
     protected void onDraw(Canvas canvas) {
-        if(m_moveCount <= 0) {
+        /*if(m_moveCount <= 0) {
             // TODO: User is out of moves, display an overlay with his final score. freeze the board.
-        }
+            Toast.makeText(getContext(), "new top score: " + m_scoreCount, Toast.LENGTH_SHORT).show();
 
-        updateBoard();
+            m_highScoreList = readRecords();
+
+            if(m_highScoreList == null) {
+                m_highScoreList = new ArrayList<>();
+            }
+
+            m_highScoreList.add(new Record("Raggi", m_scoreCount, new Date()));
+            writeRecords(m_highScoreList);
+        }*/
 
         for(int row = 0; row < NUM_CELLS; row++) {
             for(int col = 0; col < NUM_CELLS; col++) {
@@ -177,6 +194,19 @@ public class BoardView extends View {
                 m_moveCount--;
             }
             m_cellPath.clear();
+
+            if(m_moveCount <= 0) {
+                // TODO: User is out of moves, display an overlay with his final score. freeze the board.
+                Toast.makeText(getContext(), "new top score: " + m_scoreCount, Toast.LENGTH_SHORT).show();
+
+                readRecords();
+
+                m_highScoreList.add(new Record("Raggi", m_scoreCount, new Date()));
+                writeRecords(m_highScoreList);
+            }
+
+
+            updateBoard();
             invalidate();
         }
         return true;
@@ -230,5 +260,36 @@ public class BoardView extends View {
                 && m_board.get(currRow).get(currCol).equals(m_board.get(lastRow).get(lastCol))
                 && ((Math.abs(currRow - lastRow) == 1 && currCol == lastCol)
                 || (Math.abs(currCol - lastCol) == 1 && currRow == lastRow));
+    }
+
+    private void readRecords() {
+        try {
+            FileInputStream fis = getContext().openFileInput("records.ser");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            ArrayList<Record> records = (ArrayList) ois.readObject();
+            ois.close();
+            fis.close();
+            m_highScoreList.clear();
+            for(Record r : records) {
+                m_highScoreList.add(r);
+            }
+
+        } catch(IOException ioex) {
+            // TODO: Handle IOException
+        } catch(ClassNotFoundException ex) {
+            // TODO: Handle ClassNotFoundException
+        }
+    }
+
+    private void writeRecords(ArrayList<Record> newRecords) {
+        try {
+            FileOutputStream fos = getContext().openFileOutput("records.ser", Context.MODE_PRIVATE);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(newRecords);
+            oos.close();
+            fos.close();
+        } catch(IOException ex) {
+            // TODO: Handle exception
+        }
     }
 }
