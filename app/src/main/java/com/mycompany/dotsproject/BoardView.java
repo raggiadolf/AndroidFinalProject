@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -35,9 +34,6 @@ public class BoardView extends View {
     private int m_moveCount = 5;
     private int m_scoreCount = 0;
 
-    private Rect m_rect       = new Rect();
-    private Paint m_rectPaint = new Paint();
-
     private RectF m_dot      = new RectF();
     private Paint m_dotPaint = new Paint();
 
@@ -52,13 +48,12 @@ public class BoardView extends View {
 
     private ArrayList<Record> m_highScoreList = new ArrayList<>();
 
+    //private TextView m_scoreView;
+    //private TextView m_movesView;
+
+
     public BoardView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
-        m_rectPaint.setColor(Color.BLACK);
-        m_rectPaint.setStyle(Paint.Style.STROKE);
-        m_rectPaint.setStrokeWidth(2);
-        m_rectPaint.setAntiAlias(true);
 
         m_dotPaint.setStyle(Paint.Style.FILL);
         m_dotPaint.setAntiAlias(true);
@@ -78,6 +73,9 @@ public class BoardView extends View {
                 m_board.get(row).add(col, null);
             }
         }
+
+        //m_scoreView.setText("Score: " + m_scoreCount);
+        //m_movesView.setText("Moves: " + m_moveCount);
 
         updateBoard();
     }
@@ -109,27 +107,11 @@ public class BoardView extends View {
      */
     @Override
     protected void onDraw(Canvas canvas) {
-        /*if(m_moveCount <= 0) {
-            // TODO: User is out of moves, display an overlay with his final score. freeze the board.
-            Toast.makeText(getContext(), "new top score: " + m_scoreCount, Toast.LENGTH_SHORT).show();
-
-            m_highScoreList = readRecords();
-
-            if(m_highScoreList == null) {
-                m_highScoreList = new ArrayList<>();
-            }
-
-            m_highScoreList.add(new Record("Raggi", m_scoreCount, new Date()));
-            writeRecords(m_highScoreList);
-        }*/
 
         for(int row = 0; row < NUM_CELLS; row++) {
             for(int col = 0; col < NUM_CELLS; col++) {
                 int x = col * m_cellWidth;
                 int y = row * m_cellHeight;
-                //m_rect.set(x, y, x + m_cellWidth, y + m_cellHeight);
-                //m_rect.offset(getPaddingLeft(), getPaddingTop());
-                //canvas.drawRect(m_rect, m_rectPaint);
 
                 m_dot.set(x, y, x + m_cellWidth, y + m_cellHeight);
                 m_dot.offset(getPaddingLeft(), getPaddingTop());
@@ -204,6 +186,9 @@ public class BoardView extends View {
                 m_highScoreList.add(new Record("Raggi", m_scoreCount, new Date()));
                 writeRecords(m_highScoreList);
             }
+
+            //m_movesView.setText("Moves: " + m_moveCount);
+            //m_scoreView.setText("Score: " + m_scoreCount);
 
 
             updateBoard();
