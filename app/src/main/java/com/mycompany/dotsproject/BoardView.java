@@ -11,15 +11,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import android.widget.Toast;
-
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -31,8 +23,6 @@ public class BoardView extends View {
     private final int NUM_CELLS = 6;
     private int m_cellWidth;
     private int m_cellHeight;
-    private int m_moveCount = 5;
-    private int m_scoreCount = 0;
 
     private RectF m_dot      = new RectF();
     private Paint m_dotPaint = new Paint();
@@ -46,11 +36,7 @@ public class BoardView extends View {
 
     private List<ArrayList<Integer>> m_board = new ArrayList<>();
 
-    private ArrayList<Record> m_highScoreList = new ArrayList<>();
-
-    //private TextView m_scoreView;
-    //private TextView m_movesView;
-
+    private OnMoveEventHandler m_moveHandler = null;
 
     public BoardView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -73,9 +59,6 @@ public class BoardView extends View {
                 m_board.get(row).add(col, null);
             }
         }
-
-        //m_scoreView.setText("Score: " + m_scoreCount);
-        //m_movesView.setText("Moves: " + m_moveCount);
 
         updateBoard();
     }
@@ -171,25 +154,12 @@ public class BoardView extends View {
             if(m_cellPath.size() > 1) {
                 for (Point p : m_cellPath) {
                     m_board.get(p.y).set(p.x, null);
-                    m_scoreCount++;
                 }
-                m_moveCount--;
+                if(m_moveHandler != null) {
+                    m_moveHandler.onMove(m_cellPath.size());
+                }
             }
             m_cellPath.clear();
-
-            if(m_moveCount <= 0) {
-                // TODO: User is out of moves, display an overlay(or a new activity?) with his final score. freeze the board.
-                Toast.makeText(getContext(), "new top score: " + m_scoreCount, Toast.LENGTH_SHORT).show();
-
-                readRecords();
-
-                m_highScoreList.add(new Record("Raggi", m_scoreCount, new Date()));
-                writeRecords(m_highScoreList);
-            }
-
-            //m_movesView.setText("Moves: " + m_moveCount);
-            //m_scoreView.setText("Score: " + m_scoreCount);
-
 
             updateBoard();
             invalidate();
@@ -247,34 +217,7 @@ public class BoardView extends View {
                 || (Math.abs(currCol - lastCol) == 1 && currRow == lastRow));
     }
 
-    private void readRecords() {
-        try {
-            FileInputStream fis = getContext().openFileInput("records.ser");
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            ArrayList<Record> records = (ArrayList) ois.readObject();
-            ois.close();
-            fis.close();
-            m_highScoreList.clear();
-            for(Record r : records) {
-                m_highScoreList.add(r);
-            }
-
-        } catch(IOException ioex) {
-            // TODO: Handle IOException
-        } catch(ClassNotFoundException ex) {
-            // TODO: Handle ClassNotFoundException
-        }
-    }
-
-    private void writeRecords(ArrayList<Record> newRecords) {
-        try {
-            FileOutputStream fos = getContext().openFileOutput("records.ser", Context.MODE_PRIVATE);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(newRecords);
-            oos.close();
-            fos.close();
-        } catch(IOException ex) {
-            // TODO: Handle exception
-        }
+    public void setMoveEventHandler( OnMoveEventHandler handler ) {
+        m_moveHandler = handler;
     }
 }
