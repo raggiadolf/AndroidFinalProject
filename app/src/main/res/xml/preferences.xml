@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:title="Vibrate"
+        android:summary="Vibrate on score"
+        android:key="vibrate"
+        android:defaultValue="false"
+        />
+    <CheckBoxPreference
+        android:title="Sound"
+        android:summary="Emit sound on animations"
+        android:key="sound"
+        android:defaultValue="true"
+        />
+</PreferenceScreen>

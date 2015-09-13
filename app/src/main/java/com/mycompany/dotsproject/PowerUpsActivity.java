@@ -1,5 +1,6 @@
 package com.mycompany.dotsproject;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -29,6 +30,8 @@ public class PowerUpsActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, DotsPreferenceActivity.class);
+            startActivity(intent);
             return true;
         }
 

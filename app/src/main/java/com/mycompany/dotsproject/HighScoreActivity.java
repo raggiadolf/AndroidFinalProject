@@ -1,6 +1,7 @@
 package com.mycompany.dotsproject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -62,6 +63,8 @@ public class HighScoreActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, DotsPreferenceActivity.class);
+            startActivity(intent);
             return true;
         }
 

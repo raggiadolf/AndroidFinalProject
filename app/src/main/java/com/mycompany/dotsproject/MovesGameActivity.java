@@ -1,6 +1,10 @@
 package com.mycompany.dotsproject;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,6 +22,10 @@ import java.util.Date;
 
 public class MovesGameActivity extends AppCompatActivity {
 
+    private Vibrator m_vibrator;
+    private Boolean m_use_vibrator = false;
+    SharedPreferences m_sp;
+
     private BoardView m_bv;
     private TextView m_scoreCountView;
     private TextView m_moveCountView;
@@ -31,6 +39,9 @@ public class MovesGameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_moves_game);
+
+        m_vibrator = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+        m_sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
         m_scoreCountView = (TextView) findViewById(R.id.scoreCount);
         m_moveCountView = (TextView) findViewById(R.id.movesCount);
@@ -47,6 +58,11 @@ public class MovesGameActivity extends AppCompatActivity {
                 m_scoreCountView.setText("Score " + m_scoreCount);
                 m_moveCountView.setText("Moves " + m_moveCount);
 
+                if (m_use_vibrator) {
+                    m_vibrator.vibrate(500);
+                    //Toast.makeText(getApplicationContext(), "Vibrate ...", Toast.LENGTH_SHORT).show();
+                }
+
                 if(m_moveCount <= 0) {
                 // TODO: User is out of moves, display an overlay(or a new activity?) with his final score. freeze the board.
                 Toast.makeText(getApplicationContext(), "new top score: " + m_scoreCount, Toast.LENGTH_SHORT).show();
@@ -58,6 +74,12 @@ public class MovesGameActivity extends AppCompatActivity {
             }
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        m_use_vibrator = m_sp.getBoolean("vibrate", false);
     }
 
     @Override
@@ -76,6 +98,8 @@ public class MovesGameActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, DotsPreferenceActivity.class);
+            startActivity(intent);
             return true;
         }
 
