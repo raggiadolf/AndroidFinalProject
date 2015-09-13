@@ -24,6 +24,7 @@ public class MovesGameActivity extends AppCompatActivity {
 
     private Vibrator m_vibrator;
     private Boolean m_use_vibrator = false;
+    private Boolean m_use_sound = false;
     SharedPreferences m_sp;
 
     private BoardView m_bv;
@@ -58,9 +59,11 @@ public class MovesGameActivity extends AppCompatActivity {
                 m_scoreCountView.setText("Score " + m_scoreCount);
                 m_moveCountView.setText("Moves " + m_moveCount);
 
-                if (m_use_vibrator) {
+                if(useVibrator()) {
                     m_vibrator.vibrate(500);
-                    //Toast.makeText(getApplicationContext(), "Vibrate ...", Toast.LENGTH_SHORT).show();
+                }
+                if(useSound()) {
+                    // TODO: Play sound for score
                 }
 
                 if(m_moveCount <= 0) {
@@ -79,7 +82,9 @@ public class MovesGameActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
         m_use_vibrator = m_sp.getBoolean("vibrate", false);
+        m_use_sound = m_sp.getBoolean("sound", false);
     }
 
     @Override
@@ -135,5 +140,13 @@ public class MovesGameActivity extends AppCompatActivity {
         } catch(IOException ex) {
             // TODO: Handle exception
         }
+    }
+
+    public boolean useSound() {
+        return m_use_sound;
+    }
+
+    public boolean useVibrator() {
+        return m_use_vibrator;
     }
 }

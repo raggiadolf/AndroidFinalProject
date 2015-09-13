@@ -20,6 +20,8 @@ import java.util.Random;
  */
 public class BoardView extends View {
 
+    private MovesGameActivity context = (MovesGameActivity) getContext();
+
     private final int NUM_CELLS = 6;
     private int m_cellWidth;
     private int m_cellHeight;
@@ -141,10 +143,16 @@ public class BoardView extends View {
                 if (!m_cellPath.contains(new Point(col, row))
                         && checkIfCellIsLegal(row, col, last.y, last.x)) {
                     m_cellPath.add(new Point(col, row));
+                    if(context.useSound()) {
+                        // TODO: Play sound for path
+                    }
                 } else if(m_cellPath.size() > 1){ // Remove if backtracking
                     Point secondToLast = m_cellPath.get(m_cellPath.size() - 2);
                     if(row == secondToLast.y && col == secondToLast.x) {
                         m_cellPath.remove(m_cellPath.size() - 1);
+                        if(context.useSound()) {
+                            // TODO: Play sound for path removal
+                        }
                     }
                 }
                 invalidate();
