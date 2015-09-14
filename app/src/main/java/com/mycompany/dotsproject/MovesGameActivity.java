@@ -3,11 +3,14 @@ package com.mycompany.dotsproject;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -39,6 +42,8 @@ public class MovesGameActivity extends AppCompatActivity {
     private int m_moveCount = 30;
     private int m_scoreCount = 0;
 
+    final SoundPool soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +53,8 @@ public class MovesGameActivity extends AppCompatActivity {
             m_scoreCount = savedInstanceState.getInt("score");
             m_moveCount  = savedInstanceState.getInt("moves");
         }
+
+        final int sound = soundPool.load(this, R.raw.dotsgone, 1);
 
         m_vibrator = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
         m_sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
@@ -72,6 +79,8 @@ public class MovesGameActivity extends AppCompatActivity {
                 }
                 if(useSound()) {
                     // TODO: Play sound for score
+                    soundPool.play(sound, 1.0f, 1.0f, 0, 0, 1.0f);
+                    Log.i("Sound", "playing");
                 }
 
                 if(m_moveCount <= 0) {
@@ -83,7 +92,7 @@ public class MovesGameActivity extends AppCompatActivity {
                 Collections.sort(m_highScoreList, new Comparator<Record>() {
                     @Override
                     public int compare(Record lhs, Record rhs) {
-                        return lhs.getScore() - rhs.getScore();
+                        return rhs.getScore() - lhs.getScore();
                     }
                 });
 
@@ -140,6 +149,7 @@ public class MovesGameActivity extends AppCompatActivity {
             ArrayList<Record> records = (ArrayList) ois.readObject();
             ois.close();
             fis.close();
+            records.subList(0, 5); // Make sure we only have 5 records in the list
             m_highScoreList.clear();
             for(Record r : records) {
                 m_highScoreList.add(r);
