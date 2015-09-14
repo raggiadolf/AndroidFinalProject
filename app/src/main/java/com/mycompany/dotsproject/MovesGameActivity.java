@@ -111,6 +111,18 @@ public class MovesGameActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putInt("moves", m_moveCount);
+        savedInstanceState.putInt("score", m_scoreCount);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        m_moveCount  = savedInstanceState.getInt("moves");
+        m_scoreCount = savedInstanceState.getInt("score");
+    }
+
     private void readRecords() {
         try {
             FileInputStream fis = openFileInput("records.ser");
