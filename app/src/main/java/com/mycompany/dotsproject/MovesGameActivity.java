@@ -41,6 +41,11 @@ public class MovesGameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_moves_game);
 
+        if (savedInstanceState != null) {
+            m_scoreCount = savedInstanceState.getInt("score");
+            m_moveCount  = savedInstanceState.getInt("moves");
+        }
+
         m_vibrator = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
         m_sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
@@ -113,14 +118,9 @@ public class MovesGameActivity extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putInt("moves", m_moveCount);
         savedInstanceState.putInt("score", m_scoreCount);
-    }
-
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        m_moveCount  = savedInstanceState.getInt("moves");
-        m_scoreCount = savedInstanceState.getInt("score");
     }
 
     private void readRecords() {
