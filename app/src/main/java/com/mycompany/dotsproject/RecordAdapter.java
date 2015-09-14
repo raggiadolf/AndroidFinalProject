@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -33,6 +34,9 @@ public class RecordAdapter extends ArrayAdapter<Record> {
         // TODO: Format the date
         TextView dateView = (TextView) rowView.findViewById(R.id.date);
         dateView.setText(values.get(position).getDate().toString());
+
+        ImageView coolView = (ImageView) rowView.findViewById(R.id.row_cool);
+        coolView.setImageResource(R.drawable.timed);
 
         return rowView;
     }
