@@ -3,6 +3,7 @@ package com.mycompany.dotsproject;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 public class MovesGameActivity extends AppCompatActivity {
@@ -76,6 +79,13 @@ public class MovesGameActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "new top score: " + m_scoreCount, Toast.LENGTH_SHORT).show();
 
                 readRecords();
+
+                Collections.sort(m_highScoreList, new Comparator<Record>() {
+                    @Override
+                    public int compare(Record lhs, Record rhs) {
+                        return lhs.getScore() - rhs.getScore();
+                    }
+                });
 
                 m_highScoreList.add(new Record("Raggi", m_scoreCount, new Date()));
                 writeRecords(m_highScoreList);

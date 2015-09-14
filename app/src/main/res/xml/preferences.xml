@@ -10,6 +10,6 @@
         android:title="Sound"
         android:summary="Emit sound on animations"
         android:key="sound"
-        android:defaultValue="true"
+        android:defaultValue="false"
         />
 </PreferenceScreen>
