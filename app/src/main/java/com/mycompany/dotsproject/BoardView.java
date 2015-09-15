@@ -9,6 +9,7 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -172,6 +173,7 @@ public class BoardView extends View {
                 for (Point p : m_cellPath) {
                     m_boardDotColors.get(p.y).set(p.x, null);
                     animateDotsDissapear(m_boardDots.get(p.y).get(p.x));
+                    Log.i("animating", "row: " + p.y + ", col: " + p.x);
                 }
                 if(m_moveHandler != null) {
                     m_moveHandler.onMove(m_cellPath.size());
@@ -246,8 +248,7 @@ public class BoardView extends View {
     ValueAnimator animator = new ValueAnimator();
 
     private void animateDotsDissapear(final RectF dot) {
-        animator.removeAllUpdateListeners();
-        animator.setDuration(1000);
+        animator.setDuration(500);
         animator.setFloatValues(0.0f, 1.0f);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
