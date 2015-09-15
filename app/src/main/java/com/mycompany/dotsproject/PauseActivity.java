@@ -71,7 +71,8 @@ public class PauseActivity extends AppCompatActivity {
     }
 
     public void restartGame(View view) {
-
+        Intent intent = new Intent(this, MovesGameActivity.class);
+        startActivity(intent);
     }
 
     public void mainMenu(View view) {
