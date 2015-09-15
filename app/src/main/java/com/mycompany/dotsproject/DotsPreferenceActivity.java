@@ -1,6 +1,5 @@
 package com.mycompany.dotsproject;
 
-import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +7,6 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
-import android.widget.TextView;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -48,9 +46,14 @@ public class DotsPreferenceActivity extends PreferenceActivity {
 
     private void emptyRecords() {
         try {
-            FileOutputStream fos = openFileOutput("records.ser", Context.MODE_PRIVATE);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(new ArrayList<Record>());
+            FileOutputStream fossix = openFileOutput("recordssix.ser", Context.MODE_PRIVATE);
+            FileOutputStream foseight = openFileOutput("recordseight.ser", Context.MODE_PRIVATE);
+
+            ObjectOutputStream oossix = new ObjectOutputStream(fossix);
+            oossix.writeObject(new ArrayList<Record>());
+
+            ObjectOutputStream ooseight = new ObjectOutputStream(foseight);
+            ooseight.writeObject(new ArrayList<Record>());
         } catch(IOException ex) {
             // TODO: Handler exception
         }
