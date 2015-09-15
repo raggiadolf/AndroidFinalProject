@@ -6,10 +6,17 @@
         android:key="vibrate"
         android:defaultValue="false"
         />
+
     <CheckBoxPreference
         android:title="Sound"
         android:summary="Emit sound on animations"
         android:key="sound"
         android:defaultValue="false"
+        />
+
+    <Preference
+        android:title="Reset highscores"
+        android:key="@string/resetHighScores"
+        android:summary="Reset the highscores list"
         />
 </PreferenceScreen>
