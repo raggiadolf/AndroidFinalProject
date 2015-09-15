@@ -72,15 +72,14 @@ public class MovesGameActivity extends AppCompatActivity {
                 m_scoreCountView.setText("Score " + m_scoreCount);
                 m_moveCountView.setText("Moves " + m_moveCount);
 
-                if(useVibrator()) {
+                if (useVibrator()) {
                     m_vibrator.vibrate(500);
                 }
-                if(useSound()) {
+                if (useSound()) {
                     soundPool.play(sound, 1.0f, 1.0f, 0, 0, 1.0f);
                 }
 
-                if(m_moveCount <= 0) {
-                    // TODO: User is out of moves, display an overlay(or a new activity?) with his final score. freeze the board.
+                if (m_moveCount <= 0) {
                     Intent intent = new Intent(getApplicationContext(), GameOverActivity.class);
                     intent.putExtra("score", m_scoreCount);
                     startActivity(intent);
@@ -131,6 +130,10 @@ public class MovesGameActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         // Start pause activity?
+        Intent intent = new Intent(this, PauseActivity.class);
+        intent.putExtra("score", m_scoreCount);
+        intent.putExtra("moves", m_moveCount);
+        startActivity(intent);
     }
 
     public boolean useSound() {

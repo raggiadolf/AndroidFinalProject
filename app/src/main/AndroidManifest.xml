@@ -38,6 +38,10 @@
             android:name=".GameOverActivity"
             android:label="@string/title_activity_game_over" >
         </activity>
+        <activity
+            android:name=".PauseActivity"
+            android:label="@string/title_activity_pause" >
+        </activity>
     </application>
 
 </manifest>
