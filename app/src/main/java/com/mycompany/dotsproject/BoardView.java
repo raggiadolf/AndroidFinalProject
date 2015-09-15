@@ -57,7 +57,6 @@ public class BoardView extends View {
         m_dotColors = getColors();
 
         num_cells = this.context.getSize();
-        Log.i("view", "" + num_cells);
 
         for(int row = 0; row < num_cells; row++) {
             m_board.add(new ArrayList<Integer>());
@@ -233,7 +232,7 @@ public class BoardView extends View {
         m_moveHandler = handler;
     }
 
-    public void setBoardSize(int num_cells) {
-        this.num_cells = num_cells;
+    public int getBoardSize() {
+        return num_cells;
     }
 }

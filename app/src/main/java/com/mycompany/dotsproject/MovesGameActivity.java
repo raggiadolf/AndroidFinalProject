@@ -40,7 +40,7 @@ public class MovesGameActivity extends AppCompatActivity {
     private TextView m_scoreCountView;
     private TextView m_moveCountView;
 
-    private int m_moveCount = 5;
+    private int m_moveCount = 30;
     private int m_scoreCount = 0;
 
     final SoundPool soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
@@ -51,7 +51,6 @@ public class MovesGameActivity extends AppCompatActivity {
         m_sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
         m_boardSize = m_sp.getBoolean("size", false) ? 8 : 6;
-        Log.i("activity", "" + m_boardSize);
 
         setContentView(R.layout.activity_moves_game);
 
@@ -101,6 +100,11 @@ public class MovesGameActivity extends AppCompatActivity {
 
         m_use_vibrator = m_sp.getBoolean("vibrate", false);
         m_use_sound = m_sp.getBoolean("sound", false);
+
+        m_boardSize = m_sp.getBoolean("size", false) ? 8 : 6;
+        if(m_boardSize != m_bv.getBoardSize()) {
+            reload();
+        }
     }
 
     @Override
@@ -153,5 +157,14 @@ public class MovesGameActivity extends AppCompatActivity {
 
     public int getSize() {
         return m_boardSize;
+    }
+
+    public void reload() {
+        Intent intent = getIntent();
+        overridePendingTransition(0, 0);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(intent);
     }
 }
