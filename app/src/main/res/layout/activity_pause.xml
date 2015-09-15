@@ -11,7 +11,10 @@
         android:id="@+id/moves_score"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginBottom="50dp"
+
+        >
 
         <TextView
             android:id="@+id/movesCount"
@@ -28,6 +31,8 @@
 
     </LinearLayout>
 
+
+
     <Button
         android:id="@+id/continueButton"
         android:layout_width="wrap_content"
@@ -35,6 +40,9 @@
         android:layout_gravity="center_horizontal"
         android:text="Continue playing"
         android:onClick="continueGame"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:background="@drawable/round_button"
         />
 
     <Button
@@ -44,6 +52,9 @@
         android:layout_gravity="center_horizontal"
         android:text="Restart"
         android:onClick="restartGame"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:background="@drawable/round_button"
         />
 
     <Button
@@ -53,6 +64,9 @@
         android:layout_gravity="center_horizontal"
         android:text="Go back to main menu"
         android:onClick="mainMenu"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:background="@drawable/round_button"
         />
 
     <Button
@@ -62,7 +76,11 @@
         android:layout_gravity="center_horizontal"
         android:text="Settings"
         android:onClick="settings"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:background="@drawable/round_button"
         />
+
 
 
 </LinearLayout>
