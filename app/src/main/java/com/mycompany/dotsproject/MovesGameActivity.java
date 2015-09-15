@@ -37,8 +37,6 @@ public class MovesGameActivity extends AppCompatActivity {
     private TextView m_scoreCountView;
     private TextView m_moveCountView;
 
-    private ArrayList<Record> m_highScoreList = new ArrayList<>();
-
     private int m_moveCount = 5;
     private int m_scoreCount = 0;
 
@@ -78,7 +76,6 @@ public class MovesGameActivity extends AppCompatActivity {
                     m_vibrator.vibrate(500);
                 }
                 if(useSound()) {
-                    // TODO: Play sound for score
                     soundPool.play(sound, 1.0f, 1.0f, 0, 0, 1.0f);
                 }
 
@@ -87,18 +84,6 @@ public class MovesGameActivity extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), GameOverActivity.class);
                     intent.putExtra("score", m_scoreCount);
                     startActivity(intent);
-
-                    /*readRecords();
-
-                    Collections.sort(m_highScoreList, new Comparator<Record>() {
-                        @Override
-                        public int compare(Record lhs, Record rhs) {
-                            return rhs.getScore() - lhs.getScore();
-                        }
-                    });
-
-                    m_highScoreList.add(new Record("Raggi", m_scoreCount, new Date()));
-                    writeRecords(m_highScoreList);*/
                 }
             }
         });
@@ -143,35 +128,9 @@ public class MovesGameActivity extends AppCompatActivity {
         savedInstanceState.putInt("score", m_scoreCount);
     }
 
-    private void readRecords() {
-        try {
-            FileInputStream fis = openFileInput("records.ser");
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            ArrayList<Record> records = (ArrayList) ois.readObject();
-            ois.close();
-            fis.close();
-            m_highScoreList.clear();
-            for(Record r : records) {
-                m_highScoreList.add(r);
-            }
-
-        } catch(IOException ioex) {
-            // TODO: Handle IOException
-        } catch(ClassNotFoundException ex) {
-            // TODO: Handle ClassNotFoundException
-        }
-    }
-
-    private void writeRecords(ArrayList<Record> newRecords) {
-        try {
-            FileOutputStream fos = openFileOutput("records.ser", Context.MODE_PRIVATE);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(newRecords);
-            oos.close();
-            fos.close();
-        } catch(IOException ex) {
-            // TODO: Handle exception
-        }
+    @Override
+    public void onBackPressed() {
+        // Start pause activity?
     }
 
     public boolean useSound() {

@@ -89,6 +89,11 @@ public class GameOverActivity extends AppCompatActivity {
         savedInstanceState.putInt("score", m_score);
     }
 
+    @Override
+    public void onBackPressed() {
+        // Send back to main activity
+    }
+
     private void readRecords() {
         try {
             FileInputStream fis = openFileInput("records.ser");
