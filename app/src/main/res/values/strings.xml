@@ -9,4 +9,5 @@
     <string name="title_activity_game_over">GameOverActivity</string>
     <string name="title_activity_pause">PauseActivity</string>
     <string name="resetHighScores">Reset High scores</string>
+    <string name="warning_message">Changing the board size will reset the current game</string>
 </resources>

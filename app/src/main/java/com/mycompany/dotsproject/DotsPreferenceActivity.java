@@ -1,9 +1,14 @@
 package com.mycompany.dotsproject;
 
+import android.app.ActionBar;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceCategory;
+import android.preference.PreferenceScreen;
+import android.widget.TextView;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -20,6 +25,8 @@ public class DotsPreferenceActivity extends PreferenceActivity {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
 
+        PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(this);
+
         Preference button = findPreference(getString(R.string.resetHighScores));
         button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -28,6 +35,15 @@ public class DotsPreferenceActivity extends PreferenceActivity {
                 return true;
             }
         });
+
+        Intent m_intent = getIntent();
+        if(m_intent.getBooleanExtra("ingame", false)) {
+            PreferenceCategory prefCat = new PreferenceCategory(this);
+            prefCat.setLayoutResource(R.layout.warning_message);
+            screen.addPreference(prefCat);
+            setPreferenceScreen(screen);
+            addPreferencesFromResource(R.xml.preferences);
+        }
     }
 
     private void emptyRecords() {
