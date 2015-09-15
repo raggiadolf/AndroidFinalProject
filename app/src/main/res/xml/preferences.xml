@@ -14,6 +14,15 @@
         android:defaultValue="false"
         />
 
+    <SwitchPreference
+        android:title="BoardSize"
+        android:key="size"
+        android:summaryOff="Board size is 6x6"
+        android:switchTextOff="6x6"
+        android:summaryOn="Board size is 8x8"
+        android:switchTextOn="8x8"
+        />
+
     <Preference
         android:title="Reset highscores"
         android:key="@string/resetHighScores"

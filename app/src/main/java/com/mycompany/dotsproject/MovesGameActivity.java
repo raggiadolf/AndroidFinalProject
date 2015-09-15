@@ -29,6 +29,8 @@ import java.util.Date;
 
 public class MovesGameActivity extends AppCompatActivity {
 
+    private int m_boardSize = 6;
+
     private Vibrator m_vibrator;
     private Boolean m_use_vibrator = false;
     private Boolean m_use_sound = false;
@@ -46,6 +48,11 @@ public class MovesGameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        m_sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+
+        m_boardSize = m_sp.getBoolean("size", false) ? 8 : 6;
+        Log.i("activity", "" + m_boardSize);
+
         setContentView(R.layout.activity_moves_game);
 
         if (savedInstanceState != null) {
@@ -56,7 +63,6 @@ public class MovesGameActivity extends AppCompatActivity {
         final int sound = soundPool.load(this, R.raw.dotsgone, 1);
 
         m_vibrator = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-        m_sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
         m_scoreCountView = (TextView) findViewById(R.id.scoreCount);
         m_moveCountView = (TextView) findViewById(R.id.movesCount);
@@ -143,5 +149,9 @@ public class MovesGameActivity extends AppCompatActivity {
 
     public boolean useVibrator() {
         return m_use_vibrator;
+    }
+
+    public int getSize() {
+        return m_boardSize;
     }
 }

@@ -8,6 +8,7 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -22,7 +23,7 @@ public class BoardView extends View {
 
     private MovesGameActivity context = (MovesGameActivity) getContext();
 
-    private final int NUM_CELLS = 6;
+    private int num_cells;
     private int m_cellWidth;
     private int m_cellHeight;
 
@@ -55,9 +56,12 @@ public class BoardView extends View {
 
         m_dotColors = getColors();
 
-        for(int row = 0; row < NUM_CELLS; row++) {
+        num_cells = this.context.getSize();
+        Log.i("view", "" + num_cells);
+
+        for(int row = 0; row < num_cells; row++) {
             m_board.add(new ArrayList<Integer>());
-            for(int col = 0; col < NUM_CELLS; col++) {
+            for(int col = 0; col < num_cells; col++) {
                 m_board.get(row).add(col, null);
             }
         }
@@ -81,8 +85,8 @@ public class BoardView extends View {
         int boardWidth = (xNew - getPaddingLeft() - getPaddingRight());
         int boardHeight = (yNew - getPaddingTop() - getPaddingBottom());
 
-        m_cellWidth = boardWidth / NUM_CELLS;
-        m_cellHeight = boardHeight / NUM_CELLS;
+        m_cellWidth = boardWidth / num_cells;
+        m_cellHeight = boardHeight / num_cells;
     }
 
 
@@ -93,8 +97,8 @@ public class BoardView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
 
-        for(int row = 0; row < NUM_CELLS; row++) {
-            for(int col = 0; col < NUM_CELLS; col++) {
+        for(int row = 0; row < num_cells; row++) {
+            for(int col = 0; col < num_cells; col++) {
                 int x = col * m_cellWidth;
                 int y = row * m_cellHeight;
 
@@ -193,8 +197,8 @@ public class BoardView extends View {
     }
 
     private void updateBoard() {
-        for(int row = 0; row < NUM_CELLS; row++) {
-            for(int col = 0; col < NUM_CELLS; col++) {
+        for(int row = 0; row < num_cells; row++) {
+            for(int col = 0; col < num_cells; col++) {
                 if(m_board.get(row).get(col) == null) {
                     m_board.get(row).set(col, m_dotColors.get(new Random().nextInt(m_dotColors.size())));
                 }
@@ -219,7 +223,7 @@ public class BoardView extends View {
     }
 
     private boolean checkIfCellIsLegal(int currRow, int currCol, int lastRow, int lastCol) {
-        return currRow < NUM_CELLS && currRow >= 0 && currCol < NUM_CELLS && currCol >= 0
+        return currRow < num_cells && currRow >= 0 && currCol < num_cells && currCol >= 0
                 && m_board.get(currRow).get(currCol).equals(m_board.get(lastRow).get(lastCol))
                 && ((Math.abs(currRow - lastRow) == 1 && currCol == lastCol)
                 || (Math.abs(currCol - lastCol) == 1 && currRow == lastRow));
@@ -227,5 +231,9 @@ public class BoardView extends View {
 
     public void setMoveEventHandler( OnMoveEventHandler handler ) {
         m_moveHandler = handler;
+    }
+
+    public void setBoardSize(int num_cells) {
+        this.num_cells = num_cells;
     }
 }
