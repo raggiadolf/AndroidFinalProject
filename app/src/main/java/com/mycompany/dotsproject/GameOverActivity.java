@@ -2,6 +2,8 @@ package com.mycompany.dotsproject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,10 +28,18 @@ public class GameOverActivity extends AppCompatActivity {
     private TextView m_scoreView;
     private TextView m_messageView;
 
+    private String m_recordFile;
+
+    SharedPreferences m_sp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_over);
+
+        m_sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+
+        m_recordFile = m_sp.getBoolean("size", false) ? "recordseight.ser" : "recordssix.ser";
 
         m_scoreView = (TextView) findViewById(R.id.finalScore);
         m_messageView = (TextView) findViewById(R.id.message);
@@ -96,7 +106,7 @@ public class GameOverActivity extends AppCompatActivity {
 
     private void readRecords() {
         try {
-            FileInputStream fis = openFileInput("records.ser");
+            FileInputStream fis = openFileInput(m_recordFile);
             ObjectInputStream ois = new ObjectInputStream(fis);
             ArrayList<Record> records = (ArrayList) ois.readObject();
             ois.close();
@@ -114,7 +124,7 @@ public class GameOverActivity extends AppCompatActivity {
 
     private void writeRecords(ArrayList<Record> newRecords) {
         try {
-            FileOutputStream fos = openFileOutput("records.ser", Context.MODE_PRIVATE);
+            FileOutputStream fos = openFileOutput(m_recordFile, Context.MODE_PRIVATE);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(newRecords);
             oos.close();
@@ -181,6 +191,12 @@ public class GameOverActivity extends AppCompatActivity {
 
     public void replay(View view) {
         Intent intent = new Intent(this, MovesGameActivity.class);
+        startActivity(intent);
+    }
+
+    public void mainMenu(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 }

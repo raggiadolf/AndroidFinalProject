@@ -2,6 +2,8 @@ package com.mycompany.dotsproject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,10 +25,18 @@ public class HighScoreActivity extends AppCompatActivity {
     private ArrayList<Record> m_data = new ArrayList<>();
     private RecordAdapter m_adapter;
 
+    private String m_recordFile;
+
+    SharedPreferences m_sp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_high_score);
+
+        m_sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+
+        m_recordFile = m_sp.getBoolean("size", false) ? "recordseight.ser" : "recordssix.ser";
 
         m_listView = (ListView) findViewById(R.id.records);
 
@@ -73,7 +83,7 @@ public class HighScoreActivity extends AppCompatActivity {
 
     private void writeRecords() {
         try {
-            FileOutputStream fos = openFileOutput("records.ser", Context.MODE_PRIVATE);
+            FileOutputStream fos = openFileOutput(m_recordFile, Context.MODE_PRIVATE);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(m_data);
             oos.close();
@@ -85,7 +95,7 @@ public class HighScoreActivity extends AppCompatActivity {
 
     private void readRecords() {
         try {
-            FileInputStream fis = openFileInput("records.ser");
+            FileInputStream fis = openFileInput(m_recordFile);
             ObjectInputStream ois = new ObjectInputStream(fis);
             ArrayList<Record> records = (ArrayList) ois.readObject();
             ois.close();
