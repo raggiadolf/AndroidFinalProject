@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mycompany.dotsproject" >
+
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
@@ -32,6 +33,10 @@
         <activity
             android:name=".DotsPreferenceActivity"
             android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".GameOverActivity"
+            android:label="@string/title_activity_game_over" >
         </activity>
     </application>
 

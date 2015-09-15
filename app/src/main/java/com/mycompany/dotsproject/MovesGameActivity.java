@@ -39,7 +39,7 @@ public class MovesGameActivity extends AppCompatActivity {
 
     private ArrayList<Record> m_highScoreList = new ArrayList<>();
 
-    private int m_moveCount = 30;
+    private int m_moveCount = 5;
     private int m_scoreCount = 0;
 
     final SoundPool soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
@@ -80,25 +80,26 @@ public class MovesGameActivity extends AppCompatActivity {
                 if(useSound()) {
                     // TODO: Play sound for score
                     soundPool.play(sound, 1.0f, 1.0f, 0, 0, 1.0f);
-                    Log.i("Sound", "playing");
                 }
 
                 if(m_moveCount <= 0) {
-                // TODO: User is out of moves, display an overlay(or a new activity?) with his final score. freeze the board.
-                Toast.makeText(getApplicationContext(), "new top score: " + m_scoreCount, Toast.LENGTH_SHORT).show();
+                    // TODO: User is out of moves, display an overlay(or a new activity?) with his final score. freeze the board.
+                    Intent intent = new Intent(getApplicationContext(), GameOverActivity.class);
+                    intent.putExtra("score", m_scoreCount);
+                    startActivity(intent);
 
-                readRecords();
+                    /*readRecords();
 
-                Collections.sort(m_highScoreList, new Comparator<Record>() {
-                    @Override
-                    public int compare(Record lhs, Record rhs) {
-                        return rhs.getScore() - lhs.getScore();
-                    }
-                });
+                    Collections.sort(m_highScoreList, new Comparator<Record>() {
+                        @Override
+                        public int compare(Record lhs, Record rhs) {
+                            return rhs.getScore() - lhs.getScore();
+                        }
+                    });
 
-                m_highScoreList.add(new Record("Raggi", m_scoreCount, new Date()));
-                writeRecords(m_highScoreList);
-            }
+                    m_highScoreList.add(new Record("Raggi", m_scoreCount, new Date()));
+                    writeRecords(m_highScoreList);*/
+                }
             }
         });
     }
@@ -149,7 +150,6 @@ public class MovesGameActivity extends AppCompatActivity {
             ArrayList<Record> records = (ArrayList) ois.readObject();
             ois.close();
             fis.close();
-            records.subList(0, 5); // Make sure we only have 5 records in the list
             m_highScoreList.clear();
             for(Record r : records) {
                 m_highScoreList.add(r);
