@@ -40,9 +40,9 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Power ups"
-        android:id="@+id/powerUpsButton"
-        android:onClick="powerUps"
+        android:text="Settings"
+        android:id="@+id/settingsButton"
+        android:onClick="settings"
         android:layout_alignTop="@+id/highScoreButton"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />

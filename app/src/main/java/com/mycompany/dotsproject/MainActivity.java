@@ -68,4 +68,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, PowerUpsActivity.class);
         startActivity(intent);
     }
+
+    public void settings(View view) {
+        Intent intent = new Intent(this, DotsPreferenceActivity.class);
+        startActivity(intent);
+    }
 }
