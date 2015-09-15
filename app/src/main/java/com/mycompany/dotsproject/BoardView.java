@@ -9,7 +9,6 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -38,7 +37,8 @@ public class BoardView extends View {
 
     private List<Integer> m_dotColors = new ArrayList<>();
 
-    private List<ArrayList<Integer>> m_board = new ArrayList<>();
+    private List<ArrayList<Integer>> m_boardDotColors = new ArrayList<>();
+    private List<ArrayList<RectF>> m_boardDots = new ArrayList<>();
 
     private OnMoveEventHandler m_moveHandler = null;
 
@@ -60,9 +60,11 @@ public class BoardView extends View {
         num_cells = this.context.getSize();
 
         for(int row = 0; row < num_cells; row++) {
-            m_board.add(new ArrayList<Integer>());
+            m_boardDotColors.add(new ArrayList<Integer>());
+            m_boardDots.add(new ArrayList<RectF>());
             for(int col = 0; col < num_cells; col++) {
-                m_board.get(row).add(col, null);
+                m_boardDotColors.get(row).add(col, null);
+                m_boardDots.get(row).add(col, new RectF());
             }
         }
 
@@ -87,6 +89,16 @@ public class BoardView extends View {
 
         m_cellWidth = boardWidth / num_cells;
         m_cellHeight = boardHeight / num_cells;
+
+        for(int row = 0; row < num_cells; row++) {
+            for(int col = 0; col < num_cells; col++) {
+                int x = col * m_cellWidth;
+                int y = row * m_cellHeight;
+                m_boardDots.get(row).get(col).set(x, y, x + m_cellWidth, y + m_cellHeight);
+                m_boardDots.get(row).get(col).offset(getPaddingLeft(), getPaddingTop());
+                m_boardDots.get(row).get(col).inset(m_cellWidth * 0.1f, m_cellHeight * 0.1f);
+            }
+        }
     }
 
 
@@ -99,15 +111,8 @@ public class BoardView extends View {
 
         for(int row = 0; row < num_cells; row++) {
             for(int col = 0; col < num_cells; col++) {
-                int x = col * m_cellWidth;
-                int y = row * m_cellHeight;
-
-                m_dot.set(x, y, x + m_cellWidth, y + m_cellHeight);
-                m_dot.offset(getPaddingLeft(), getPaddingTop());
-                m_dot.inset(m_cellWidth * 0.1f, m_cellHeight * 0.1f);
-
-                m_dotPaint.setColor(m_board.get(row).get(col));
-                canvas.drawOval(m_dot, m_dotPaint);
+                m_dotPaint.setColor(m_boardDotColors.get(row).get(col));
+                canvas.drawOval(m_boardDots.get(row).get(col), m_dotPaint);
             }
         }
 
@@ -165,7 +170,8 @@ public class BoardView extends View {
         else if(event.getAction() == MotionEvent.ACTION_UP) {
             if(m_cellPath.size() > 1) {
                 for (Point p : m_cellPath) {
-                    m_board.get(p.y).set(p.x, null);
+                    m_boardDotColors.get(p.y).set(p.x, null);
+                    animateDotsDissapear(m_boardDots.get(p.y).get(p.x));
                 }
                 if(m_moveHandler != null) {
                     m_moveHandler.onMove(m_cellPath.size());
@@ -199,8 +205,8 @@ public class BoardView extends View {
     private void updateBoard() {
         for(int row = 0; row < num_cells; row++) {
             for(int col = 0; col < num_cells; col++) {
-                if(m_board.get(row).get(col) == null) {
-                    m_board.get(row).set(col, m_dotColors.get(new Random().nextInt(m_dotColors.size())));
+                if(m_boardDotColors.get(row).get(col) == null) {
+                    m_boardDotColors.get(row).set(col, m_dotColors.get(new Random().nextInt(m_dotColors.size())));
                 }
             }
         }
@@ -224,7 +230,7 @@ public class BoardView extends View {
 
     private boolean checkIfCellIsLegal(int currRow, int currCol, int lastRow, int lastCol) {
         return currRow < num_cells && currRow >= 0 && currCol < num_cells && currCol >= 0
-                && m_board.get(currRow).get(currCol).equals(m_board.get(lastRow).get(lastCol))
+                && m_boardDotColors.get(currRow).get(currCol).equals(m_boardDotColors.get(lastRow).get(lastCol))
                 && ((Math.abs(currRow - lastRow) == 1 && currCol == lastCol)
                 || (Math.abs(currCol - lastCol) == 1 && currRow == lastRow));
     }
@@ -239,7 +245,18 @@ public class BoardView extends View {
 
     ValueAnimator animator = new ValueAnimator();
 
-    private void animateDotsDissapear() {
-
+    private void animateDotsDissapear(final RectF dot) {
+        animator.removeAllUpdateListeners();
+        animator.setDuration(1000);
+        animator.setFloatValues(0.0f, 1.0f);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float ratio = (float) animation.getAnimatedValue();
+                dot.inset(ratio, ratio);
+                invalidate();
+            }
+        });
+        animator.start();
     }
 }
