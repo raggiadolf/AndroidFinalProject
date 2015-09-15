@@ -1,5 +1,6 @@
 package com.mycompany.dotsproject;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -234,5 +235,11 @@ public class BoardView extends View {
 
     public int getBoardSize() {
         return num_cells;
+    }
+
+    ValueAnimator animator = new ValueAnimator();
+
+    private void animateDotsDissapear() {
+
     }
 }
