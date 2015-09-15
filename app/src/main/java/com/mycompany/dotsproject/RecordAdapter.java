@@ -25,8 +25,8 @@ public class RecordAdapter extends ArrayAdapter<Record> {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.row_layout, parent, false);
 
-        TextView nameView = (TextView) rowView.findViewById(R.id.name);
-        nameView.setText(values.get(position).getName());
+        //TextView nameView = (TextView) rowView.findViewById(R.id.name);
+        //nameView.setText(values.get(position).getName());
 
         TextView scoreView = (TextView) rowView.findViewById(R.id.score);
         scoreView.setText("" + values.get(position).getScore());
@@ -35,8 +35,8 @@ public class RecordAdapter extends ArrayAdapter<Record> {
         TextView dateView = (TextView) rowView.findViewById(R.id.date);
         dateView.setText(values.get(position).getDate().toString());
 
-        ImageView coolView = (ImageView) rowView.findViewById(R.id.row_cool);
-        coolView.setImageResource(R.drawable.timed);
+        ImageView coolView = (ImageView) rowView.findViewById(R.id.row_player);
+        coolView.setImageResource(R.drawable.winner);
 
         return rowView;
     }
