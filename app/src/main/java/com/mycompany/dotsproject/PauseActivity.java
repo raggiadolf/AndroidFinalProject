@@ -82,6 +82,7 @@ public class PauseActivity extends AppCompatActivity {
     }
 
     public void settings(View view) {
-
+        Intent intent = new Intent(this, DotsPreferenceActivity.class);
+        startActivity(intent);
     }
 }
