@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import java.io.FileInputStream;
@@ -171,5 +172,10 @@ public class GameOverActivity extends AppCompatActivity {
                 m_highScoreList.set(i, new Record("Raggi", m_score, new Date()));
             }
         }
+    }
+
+    public void replay(View view) {
+        Intent intent = new Intent(this, MovesGameActivity.class);
+        startActivity(intent);
     }
 }
