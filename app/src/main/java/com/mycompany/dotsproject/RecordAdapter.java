@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class RecordAdapter extends ArrayAdapter<Record> {
@@ -33,10 +35,14 @@ public class RecordAdapter extends ArrayAdapter<Record> {
 
         // TODO: Format the date
         TextView dateView = (TextView) rowView.findViewById(R.id.date);
-        dateView.setText(values.get(position).getDate().toString());
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        Date d =  values.get(position).getDate();
+        String recordDate = df.format(d);
+        dateView.setText(recordDate);
 
-        ImageView coolView = (ImageView) rowView.findViewById(R.id.row_player);
-        coolView.setImageResource(R.drawable.winner);
+
+        ImageView playerView = (ImageView) rowView.findViewById(R.id.row_player);
+        playerView.setImageResource(R.drawable.winner);
 
         return rowView;
     }

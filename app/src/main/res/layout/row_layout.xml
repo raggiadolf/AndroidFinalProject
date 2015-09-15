@@ -10,7 +10,7 @@
         android:layout_width="0dp"
         android:layout_height="70dp"
         android:layout_weight="1"
-        android:padding="@dimen/activity_horizontal_margin"
+        android:padding="10dp"
         />
    <!-- <TextView
         android:id="@+id/name"
@@ -25,6 +25,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:textColor="@color/dateColor"
         />
 
     <TextView
