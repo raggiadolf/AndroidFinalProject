@@ -3,48 +3,53 @@
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
+    >
 
     <Button
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:id="@+id/startMovesGame"
         android:onClick="startMovesGame"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="160dp"
+        android:layout_marginRight="70dp"
         android:background="@drawable/button_image_moves"/>
 
     <Button
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:id="@+id/startTimedGame"
         android:onClick="startMovesGame"
         android:layout_alignTop="@+id/startMovesGame"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_marginLeft="70dp"
         android:background="@drawable/button_image_timed"/>
 
     <Button
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:id="@+id/highScoreButton"
         android:onClick="viewHighScores"
         android:layout_marginTop="89dp"
+        android:layout_marginLeft="70dp"
         android:layout_below="@+id/startTimedGame"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:background="@drawable/button_image_high_score"/>
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Settings"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:id="@+id/settingsButton"
         android:onClick="settings"
         android:layout_alignTop="@+id/highScoreButton"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="70dp"
+        android:background="@drawable/settings"/>
 
 </RelativeLayout>
