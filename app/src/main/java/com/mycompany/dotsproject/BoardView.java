@@ -1,5 +1,8 @@
 package com.mycompany.dotsproject;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -12,6 +15,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AnimationSet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +37,8 @@ public class BoardView extends View {
 
     private Path m_path       = new Path();
     private Paint m_pathPaint = new Paint();
+
+    private float dotWidth;
 
     private List<Point> m_cellPath = new ArrayList<>();
 
@@ -100,11 +106,12 @@ public class BoardView extends View {
                 m_boardDots.get(row).get(col).inset(m_cellWidth * 0.1f, m_cellHeight * 0.1f);
             }
         }
+
+        dotWidth = m_boardDots.get(0).get(0).width();
     }
 
-
     /**
-     * TODO: Document, too much logic?
+     * TODO: Document
      * @param canvas
      */
     @Override
@@ -129,6 +136,62 @@ public class BoardView extends View {
 
             canvas.drawPath(m_path, m_pathPaint);
         }
+    }
+
+    /**
+     * TODO: Document, Refactor
+     * @param row
+     * @param col
+     */
+    public void startAnimation(final int row, final int col) {
+        final RectF dot = m_boardDots.get(row).get(col);
+        ValueAnimator anim1 = new ValueAnimator();
+        anim1.setDuration(500);
+        anim1.setFloatValues(0.0f, 1.0f);
+        anim1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float ratio = (float) animation.getAnimatedValue();
+                float diffHorizontal = (dot.right - dot.left) * (ratio - 1f);
+                float diffVertical = (dot.bottom - dot.top) * (ratio - 1f);
+                dot.top    -= diffVertical / 8f;
+                dot.bottom += diffVertical / 8f;
+
+                dot.left  -= diffHorizontal / 8f;
+                dot.right += diffHorizontal / 8f;
+                invalidate();
+            }
+        });
+        anim1.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                randomizeDotColor(row, col);
+            }
+        });
+
+        ValueAnimator anim2 = new ValueAnimator();
+        anim2.setDuration(500);
+        anim2.setFloatValues(0.0f, 1.0f);
+        anim2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float ratio = (float) animation.getAnimatedValue();
+                float diffHorizontal = (dotWidth - (dot.right - dot.left)) * (ratio - 1f);
+                float diffVertical = (dotWidth - (dot.bottom - dot.top)) * (ratio - 1f);
+                dot.top    += diffVertical / 8f;
+                dot.bottom -= diffVertical / 8f;
+
+                dot.left  += diffHorizontal / 8f;
+                dot.right -= diffHorizontal / 8f;
+                invalidate();
+            }
+        });
+
+        AnimatorSet set = new AnimatorSet();
+
+        set.playSequentially(anim1, anim2);
+        set.start();
     }
 
     /**
@@ -171,18 +234,13 @@ public class BoardView extends View {
         else if(event.getAction() == MotionEvent.ACTION_UP) {
             if(m_cellPath.size() > 1) {
                 for (Point p : m_cellPath) {
-                    m_boardDotColors.get(p.y).set(p.x, null);
-                    animateDotsDissapear(m_boardDots.get(p.y).get(p.x));
-                    Log.i("animating", "row: " + p.y + ", col: " + p.x);
+                    startAnimation(p.y, p.x);
                 }
                 if(m_moveHandler != null) {
                     m_moveHandler.onMove(m_cellPath.size());
                 }
             }
             m_cellPath.clear();
-
-            updateBoard();
-            invalidate();
         }
         return true;
     }
@@ -204,6 +262,9 @@ public class BoardView extends View {
         return colors;
     }
 
+    /**
+     * TODO: Document, refactor, rename to setupBoard?
+     */
     private void updateBoard() {
         for(int row = 0; row < num_cells; row++) {
             for(int col = 0; col < num_cells; col++) {
@@ -245,19 +306,7 @@ public class BoardView extends View {
         return num_cells;
     }
 
-    ValueAnimator animator = new ValueAnimator();
-
-    private void animateDotsDissapear(final RectF dot) {
-        animator.setDuration(500);
-        animator.setFloatValues(0.0f, 1.0f);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float ratio = (float) animation.getAnimatedValue();
-                dot.inset(ratio, ratio);
-                invalidate();
-            }
-        });
-        animator.start();
+    private void randomizeDotColor(int row, int col) {
+        m_boardDotColors.get(row).set(col, m_dotColors.get(new Random().nextInt(m_dotColors.size())));
     }
 }
