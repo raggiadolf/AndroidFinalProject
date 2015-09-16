@@ -12,6 +12,8 @@ public class PauseActivity extends AppCompatActivity {
 
     private int m_moveCount;
     private int m_scoreCount;
+    private boolean m_isTimed;
+    private long m_millisleft;
 
     private TextView m_scoreCountView;
     private TextView m_moveCountView;
@@ -24,17 +26,29 @@ public class PauseActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             m_scoreCount = savedInstanceState.getInt("score");
             m_moveCount  = savedInstanceState.getInt("moves");
+            m_isTimed    = savedInstanceState.getBoolean("timed");
+            if(m_isTimed) {
+                m_millisleft = savedInstanceState.getLong("millisleft");
+            }
         }
 
         Intent m_intent = getIntent();
         m_scoreCount = m_intent.getIntExtra("score", 0);
         m_moveCount  = m_intent.getIntExtra("moves", 0);
+        m_isTimed    = m_intent.getBooleanExtra("timed", false);
+        if(m_isTimed) {
+            m_millisleft = m_intent.getLongExtra("millisleft", 0);
+        }
 
         m_scoreCountView = (TextView) findViewById(R.id.scoreCount);
         m_moveCountView = (TextView) findViewById(R.id.movesCount);
 
         m_scoreCountView.setText("Score " + m_scoreCount);
-        m_moveCountView.setText("Moves " + m_moveCount);
+        if(!m_isTimed) {
+            m_moveCountView.setText("Moves " + m_moveCount);
+        } else {
+            m_moveCountView.setText("Time " + m_millisleft / 1000);
+        }
     }
 
     @Override
@@ -64,6 +78,8 @@ public class PauseActivity extends AppCompatActivity {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putInt("moves", m_moveCount);
         savedInstanceState.putInt("score", m_scoreCount);
+        savedInstanceState.putBoolean("timed", m_isTimed);
+        savedInstanceState.putLong("millisleft", m_millisleft);
     }
 
     public void continueGame(View view) {
@@ -72,6 +88,7 @@ public class PauseActivity extends AppCompatActivity {
 
     public void restartGame(View view) {
         Intent intent = new Intent(this, MovesGameActivity.class);
+        intent.putExtra("timed", m_isTimed);
         startActivity(intent);
     }
 

@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +28,8 @@ public class GameOverActivity extends AppCompatActivity {
     private TextView m_messageView;
 
     private String m_recordFile;
+    private boolean m_isTimed;
+
 
     SharedPreferences m_sp;
 
@@ -39,7 +40,6 @@ public class GameOverActivity extends AppCompatActivity {
 
         m_sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
-        m_recordFile = m_sp.getBoolean("size", false) ? "recordseight.ser" : "recordssix.ser";
 
         m_scoreView = (TextView) findViewById(R.id.finalScore);
         m_messageView = (TextView) findViewById(R.id.message);
@@ -50,9 +50,14 @@ public class GameOverActivity extends AppCompatActivity {
 
         Intent m_intent = getIntent();
         m_score = m_intent.getIntExtra("score", 0);
+        m_isTimed = m_intent.getBooleanExtra("timed", false);
 
         m_scoreView.setText("" + m_score);
-
+        if(!m_isTimed) {
+            m_recordFile = m_sp.getBoolean("size", false) ? "recordseight.ser" : "recordssix.ser";
+        } else {
+            m_recordFile = m_sp.getBoolean("size", false) ? "recordseighttimed.ser" : "recordssixtimed.ser";
+        }
         readRecords();
 
         Collections.sort(m_highScoreList, new Comparator<Record>() {
@@ -191,6 +196,7 @@ public class GameOverActivity extends AppCompatActivity {
 
     public void replay(View view) {
         Intent intent = new Intent(this, MovesGameActivity.class);
+        intent.putExtra("timed", m_isTimed);
         startActivity(intent);
     }
 

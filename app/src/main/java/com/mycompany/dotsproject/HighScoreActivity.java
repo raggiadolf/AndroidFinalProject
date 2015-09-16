@@ -23,7 +23,8 @@ public class HighScoreActivity extends AppCompatActivity {
     private ArrayList<Record> m_data = new ArrayList<>();
     private RecordAdapter m_adapter;
 
-    private String m_recordFile;
+    private String m_recordFileMoves;
+    private String m_recordFileTimed;
 
     SharedPreferences m_sp;
 
@@ -34,7 +35,8 @@ public class HighScoreActivity extends AppCompatActivity {
 
         m_sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
-        m_recordFile = m_sp.getBoolean("size", false) ? "recordseight.ser" : "recordssix.ser";
+        m_recordFileMoves = m_sp.getBoolean("size", false) ? "recordseight.ser" : "recordssix.ser";
+        m_recordFileTimed = m_sp.getBoolean("size", false) ? "recordseighttimed.ser" : "recordssixtimed.ser";
 
         m_listView = (ListView) findViewById(R.id.records);
 
@@ -52,7 +54,6 @@ public class HighScoreActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        //writeRecords(); Probably not needed?
     }
 
     @Override
@@ -79,21 +80,9 @@ public class HighScoreActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void writeRecords() {
-        try {
-            FileOutputStream fos = openFileOutput(m_recordFile, Context.MODE_PRIVATE);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(m_data);
-            oos.close();
-            fos.close();
-        } catch(IOException ex) {
-            // TODO: Handle exception
-        }
-    }
-
     private void readRecords() {
         try {
-            FileInputStream fis = openFileInput(m_recordFile);
+            FileInputStream fis = openFileInput(m_recordFileMoves);
             ObjectInputStream ois = new ObjectInputStream(fis);
             ArrayList<Record> records = (ArrayList) ois.readObject();
             ois.close();

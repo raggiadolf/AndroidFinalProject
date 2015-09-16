@@ -1,11 +1,9 @@
 package com.mycompany.dotsproject;
 
-import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.CountDownTimer;
 import android.os.Vibrator;
@@ -16,17 +14,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 
 public class MovesGameActivity extends AppCompatActivity {
 
@@ -43,7 +30,10 @@ public class MovesGameActivity extends AppCompatActivity {
 
     private int m_moveCount = 5;
     private int m_scoreCount = 0;
-    private boolean isTimed = false;
+    private boolean m_isTimed = false;
+    private long m_millisLeft = 30000;
+    private CountDownTimer m_timer;
+    private boolean m_wasPaused = false;
 
     final SoundPool soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
 
@@ -59,10 +49,13 @@ public class MovesGameActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             m_scoreCount = savedInstanceState.getInt("score");
             m_moveCount  = savedInstanceState.getInt("moves");
+            if(m_isTimed) {
+                m_millisLeft = savedInstanceState.getLong("millisleft");
+            }
         }
 
         Intent m_intent = getIntent();
-        isTimed = m_intent.getBooleanExtra("timed", false);
+        m_isTimed = m_intent.getBooleanExtra("timed", false);
 
         final int sound = soundPool.load(this, R.raw.dotsgone, 1);
 
@@ -72,20 +65,22 @@ public class MovesGameActivity extends AppCompatActivity {
         m_moveCountView = (TextView) findViewById(R.id.movesCount);
 
         m_scoreCountView.setText("Score " + m_scoreCount);
-        if(!isTimed) {
+        if(!m_isTimed) {
             m_moveCountView.setText("Moves " + m_moveCount);
         } else {
-            new CountDownTimer(30000, 1000) {
-                public void onTick(long millisUntilFinished) {
-                    m_moveCountView.setText("Time "  + millisUntilFinished / 1000);
-                }
+            m_timer = new CountDownTimer(30000, 1000) {
+                    public void onTick(long millisUntilFinished) {
+                        m_moveCountView.setText("Time "  + millisUntilFinished / 1000);
+                        m_millisLeft = millisUntilFinished;
+                    }
 
-                public void onFinish() {
-                    Intent intent = new Intent(getApplicationContext(), GameOverActivity.class);
-                    intent.putExtra("score", m_scoreCount);
-                    startActivity(intent);
-                }
-            }.start();
+                    public void onFinish() {
+                        Intent intent = new Intent(getApplicationContext(), GameOverActivity.class);
+                        intent.putExtra("score", m_scoreCount);
+                        intent.putExtra("timed", m_isTimed);
+                        startActivity(intent);
+                    }
+                }.start();
         }
 
         m_bv = (BoardView) findViewById(R.id.boardview);
@@ -95,7 +90,7 @@ public class MovesGameActivity extends AppCompatActivity {
                 m_moveCount--;
                 m_scoreCount += moveScore;
                 m_scoreCountView.setText("Score " + m_scoreCount);
-                if(!isTimed) {
+                if(!m_isTimed) {
                     m_moveCountView.setText("Moves " + m_moveCount);
                 }
 
@@ -106,7 +101,7 @@ public class MovesGameActivity extends AppCompatActivity {
                     soundPool.play(sound, 1.0f, 1.0f, 0, 0, 1.0f);
                 }
 
-                if (m_moveCount <= 0 && !isTimed) {
+                if (m_moveCount <= 0 && !m_isTimed) {
                     Intent intent = new Intent(getApplicationContext(), GameOverActivity.class);
                     intent.putExtra("score", m_scoreCount);
                     startActivity(intent);
@@ -125,6 +120,38 @@ public class MovesGameActivity extends AppCompatActivity {
         m_boardSize = m_sp.getBoolean("size", false) ? 8 : 6;
         if(m_boardSize != m_bv.getBoardSize()) {
             reload();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(m_isTimed) {
+            m_wasPaused = true;
+            m_timer.cancel();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(m_isTimed && m_wasPaused) {
+            m_timer = new CountDownTimer(m_millisLeft, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    m_moveCountView.setText("Time " + millisUntilFinished / 1000);
+                    m_millisLeft = millisUntilFinished;
+                }
+
+                @Override
+                public void onFinish() {
+                    Intent intent = new Intent(getApplicationContext(), GameOverActivity.class);
+                    intent.putExtra("score", m_scoreCount);
+                    intent.putExtra("timed", m_isTimed);
+                    startActivity(intent);
+                }
+            }.start();
+            m_wasPaused = false;
         }
     }
 
@@ -157,14 +184,25 @@ public class MovesGameActivity extends AppCompatActivity {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putInt("moves", m_moveCount);
         savedInstanceState.putInt("score", m_scoreCount);
+        if(m_isTimed) {
+            savedInstanceState.putLong("millisleft", m_millisLeft);
+        }
     }
 
     @Override
     public void onBackPressed() {
-        // Start pause activity?
+        if(m_isTimed) {
+            m_timer.cancel();
+            m_wasPaused = true;
+        }
         Intent intent = new Intent(this, PauseActivity.class);
         intent.putExtra("score", m_scoreCount);
-        intent.putExtra("moves", m_moveCount);
+        if(!m_isTimed) {
+            intent.putExtra("moves", m_moveCount);
+        } else {
+            intent.putExtra("millisleft", m_millisLeft);
+            intent.putExtra("timed", m_isTimed);
+        }
         startActivity(intent);
     }
 
