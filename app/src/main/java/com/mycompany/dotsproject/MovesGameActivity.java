@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
+import android.os.CountDownTimer;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -42,6 +43,7 @@ public class MovesGameActivity extends AppCompatActivity {
 
     private int m_moveCount = 5;
     private int m_scoreCount = 0;
+    private boolean isTimed = false;
 
     final SoundPool soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
 
@@ -59,6 +61,9 @@ public class MovesGameActivity extends AppCompatActivity {
             m_moveCount  = savedInstanceState.getInt("moves");
         }
 
+        Intent m_intent = getIntent();
+        isTimed = m_intent.getBooleanExtra("timed", false);
+
         final int sound = soundPool.load(this, R.raw.dotsgone, 1);
 
         m_vibrator = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
@@ -67,7 +72,21 @@ public class MovesGameActivity extends AppCompatActivity {
         m_moveCountView = (TextView) findViewById(R.id.movesCount);
 
         m_scoreCountView.setText("Score " + m_scoreCount);
-        m_moveCountView.setText("Moves " + m_moveCount);
+        if(!isTimed) {
+            m_moveCountView.setText("Moves " + m_moveCount);
+        } else {
+            new CountDownTimer(30000, 1000) {
+                public void onTick(long millisUntilFinished) {
+                    m_moveCountView.setText("Time "  + millisUntilFinished / 1000);
+                }
+
+                public void onFinish() {
+                    Intent intent = new Intent(getApplicationContext(), GameOverActivity.class);
+                    intent.putExtra("score", m_scoreCount);
+                    startActivity(intent);
+                }
+            }.start();
+        }
 
         m_bv = (BoardView) findViewById(R.id.boardview);
         m_bv.setMoveEventHandler(new OnMoveEventHandler() {
@@ -76,7 +95,9 @@ public class MovesGameActivity extends AppCompatActivity {
                 m_moveCount--;
                 m_scoreCount += moveScore;
                 m_scoreCountView.setText("Score " + m_scoreCount);
-                m_moveCountView.setText("Moves " + m_moveCount);
+                if(!isTimed) {
+                    m_moveCountView.setText("Moves " + m_moveCount);
+                }
 
                 if (useVibrator()) {
                     m_vibrator.vibrate(500);
@@ -85,7 +106,7 @@ public class MovesGameActivity extends AppCompatActivity {
                     soundPool.play(sound, 1.0f, 1.0f, 0, 0, 1.0f);
                 }
 
-                if (m_moveCount <= 0) {
+                if (m_moveCount <= 0 && !isTimed) {
                     Intent intent = new Intent(getApplicationContext(), GameOverActivity.class);
                     intent.putExtra("score", m_scoreCount);
                     startActivity(intent);

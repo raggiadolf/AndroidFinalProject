@@ -60,15 +60,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Shows a list of usable power ups
-     * TODO: Figure out a list of power ups
+     * TODO: Document
      * @param view
      */
-    public void powerUps(View view) {
-        Intent intent = new Intent(this, PowerUpsActivity.class);
+    public void startTimedGame(View view) {
+        Intent intent = new Intent(this, MovesGameActivity.class);
+        intent.putExtra("timed", true);
         startActivity(intent);
     }
 
+    /**
+     * TODO: Document
+     * @param view
+     */
     public void settings(View view) {
         Intent intent = new Intent(this, DotsPreferenceActivity.class);
         startActivity(intent);
