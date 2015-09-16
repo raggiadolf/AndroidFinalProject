@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.animation.AnimationSet;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -32,7 +33,6 @@ public class BoardView extends View {
     private int m_cellWidth;
     private int m_cellHeight;
 
-    private RectF m_dot      = new RectF();
     private Paint m_dotPaint = new Paint();
 
     private Path m_path       = new Path();
@@ -308,5 +308,14 @@ public class BoardView extends View {
 
     private void randomizeDotColor(int row, int col) {
         m_boardDotColors.get(row).set(col, m_dotColors.get(new Random().nextInt(m_dotColors.size())));
+    }
+
+    public void shuffleBoard() {
+        for(ArrayList<Integer> list : m_boardDotColors) {
+            Collections.shuffle(list);
+        }
+
+        Collections.shuffle(m_boardDotColors);
+        invalidate();
     }
 }

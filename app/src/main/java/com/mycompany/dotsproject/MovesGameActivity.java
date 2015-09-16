@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 public class MovesGameActivity extends AppCompatActivity {
@@ -225,5 +226,14 @@ public class MovesGameActivity extends AppCompatActivity {
         finish();
         overridePendingTransition(0, 0);
         startActivity(intent);
+    }
+
+
+    public void pauseGame(View view) {
+        onBackPressed();
+    }
+
+    public void shuffleBoard(View view) {
+        m_bv.shuffleBoard();
     }
 }
