@@ -15,7 +15,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.AnimationSet;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,6 +31,8 @@ public class BoardView extends View {
     private int num_cells;
     private int m_cellWidth;
     private int m_cellHeight;
+    private int m_centerx;
+    private int m_centery;
 
     private Paint m_dotPaint = new Paint();
 
@@ -41,11 +42,13 @@ public class BoardView extends View {
     private float dotWidth;
 
     private List<Point> m_cellPath = new ArrayList<>();
+    private Point m_endPoint       = new Point();
+    private Point m_startPoint     = new Point();
 
     private List<Integer> m_dotColors = new ArrayList<>();
 
     private List<ArrayList<Integer>> m_boardDotColors = new ArrayList<>();
-    private List<ArrayList<RectF>> m_boardDots = new ArrayList<>();
+    private List<ArrayList<RectF>> m_boardDots        = new ArrayList<>();
 
     private OnMoveEventHandler m_moveHandler = null;
 
@@ -135,6 +138,9 @@ public class BoardView extends View {
             }
 
             canvas.drawPath(m_path, m_pathPaint);
+            if(!(m_startPoint.x == 0) && !(m_endPoint.x == 0)) {
+                canvas.drawLine(m_startPoint.x, m_startPoint.y, m_endPoint.x, m_endPoint.y, m_pathPaint);
+            }
         }
     }
 
@@ -206,6 +212,8 @@ public class BoardView extends View {
 
         if(event.getAction() == MotionEvent.ACTION_DOWN) {
             m_cellPath.add(new Point(xToCol(x), yToRow(y)));
+            m_startPoint.set(x, y);
+            Log.i("startPoint", "x: " + x + ", y: " + y);
         }
         else if(event.getAction() == MotionEvent.ACTION_MOVE) {
             if(!m_cellPath.isEmpty()) {
@@ -217,21 +225,30 @@ public class BoardView extends View {
                         && checkIfCellIsLegal(row, col, last.y, last.x)) {
                     m_cellPath.add(new Point(col, row));
                     if(context.useSound()) {
-                        // TODO: Play dotsgone for path
+                        // TODO: Play sound for path
                     }
                 } else if(m_cellPath.size() > 1){ // Remove if backtracking
                     Point secondToLast = m_cellPath.get(m_cellPath.size() - 2);
                     if(row == secondToLast.y && col == secondToLast.x) {
                         m_cellPath.remove(m_cellPath.size() - 1);
                         if(context.useSound()) {
-                            // TODO: Play dotsgone for path removal
+                            // TODO: Play sound for path removal
                         }
                     }
                 }
+                m_centerx = colToX(m_cellPath.get(m_cellPath.size() - 1).x) + m_cellWidth / 2;
+                m_centery = rowToY(m_cellPath.get(m_cellPath.size() - 1).y) + m_cellHeight / 2;
+
+                m_startPoint.set(m_centerx, m_centery);
+                m_endPoint.set(x, y);
                 invalidate();
             }
         }
         else if(event.getAction() == MotionEvent.ACTION_UP) {
+            m_startPoint.set(0, 0);
+            m_endPoint.set(0, 0);
+            invalidate();
+
             if(m_cellPath.size() > 1) {
                 for (Point p : m_cellPath) {
                     startAnimation(p.y, p.x);
