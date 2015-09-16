@@ -212,6 +212,7 @@ public class BoardView extends View {
 
         if(event.getAction() == MotionEvent.ACTION_DOWN) {
             m_cellPath.add(new Point(xToCol(x), yToRow(y)));
+            m_pathPaint.setColor(m_boardDotColors.get(yToRow(y)).get(xToCol(x)));
             m_startPoint.set(x, y);
         }
         else if(event.getAction() == MotionEvent.ACTION_MOVE) {
