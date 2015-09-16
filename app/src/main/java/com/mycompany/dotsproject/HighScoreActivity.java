@@ -1,6 +1,5 @@
 package com.mycompany.dotsproject;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -11,17 +10,19 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 public class HighScoreActivity extends AppCompatActivity {
-    private ListView m_listView;
+    private ListView m_moveListView;
+    private ListView m_timeListView;
 
-    private ArrayList<Record> m_data = new ArrayList<>();
-    private RecordAdapter m_adapter;
+    private ArrayList<Record> m_moveRecords = new ArrayList<>();
+    private ArrayList<Record> m_timeRecords = new ArrayList<>();
+
+    private RecordAdapter m_moveAdapter;
+    private RecordAdapter m_timeAdapter;
 
     private String m_recordFileMoves;
     private String m_recordFileTimed;
@@ -38,17 +39,21 @@ public class HighScoreActivity extends AppCompatActivity {
         m_recordFileMoves = m_sp.getBoolean("size", false) ? "recordseight.ser" : "recordssix.ser";
         m_recordFileTimed = m_sp.getBoolean("size", false) ? "recordseighttimed.ser" : "recordssixtimed.ser";
 
-        m_listView = (ListView) findViewById(R.id.records);
+        m_moveListView = (ListView) findViewById(R.id.moveRecords);
+        m_timeListView = (ListView) findViewById(R.id.timeRecords);
 
-        m_adapter = new RecordAdapter(this, m_data);
-        m_listView.setAdapter(m_adapter);
+        m_moveAdapter = new RecordAdapter(this, m_moveRecords);
+        m_timeAdapter = new RecordAdapter(this, m_timeRecords);
+        m_moveListView.setAdapter(m_moveAdapter);
+        m_timeListView.setAdapter(m_timeAdapter);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         readRecords();
-        m_adapter.notifyDataSetChanged();
+        m_moveAdapter.notifyDataSetChanged();
+        m_timeAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -84,12 +89,22 @@ public class HighScoreActivity extends AppCompatActivity {
         try {
             FileInputStream fis = openFileInput(m_recordFileMoves);
             ObjectInputStream ois = new ObjectInputStream(fis);
-            ArrayList<Record> records = (ArrayList) ois.readObject();
+            ArrayList<Record> moveRecords = (ArrayList) ois.readObject();
             ois.close();
             fis.close();
-            m_data.clear();
-            for(Record r : records) {
-                m_data.add(r);
+            m_moveRecords.clear();
+            for(Record r : moveRecords) {
+                m_moveRecords.add(r);
+            }
+
+            fis = openFileInput(m_recordFileTimed);
+            ois = new ObjectInputStream(fis);
+            ArrayList<Record> timeRecords = (ArrayList) ois.readObject();
+            ois.close();
+            fis.close();
+            m_timeRecords.clear();
+            for(Record r : timeRecords) {
+                m_timeRecords.add(r);
             }
         } catch(IOException ioex) {
             // TODO: Handle IOException

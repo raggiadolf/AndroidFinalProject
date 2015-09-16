@@ -253,9 +253,10 @@ public class BoardView extends View {
                 }
             }
             m_cellPath.clear();
-            
+
             m_startPoint.set(0, 0);
             m_endPoint.set(0, 0);
+            invalidate();
         }
         return true;
     }
