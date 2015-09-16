@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -32,6 +32,12 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="60dp">
+
 
 
     <Button
@@ -46,17 +52,7 @@
         android:background="@drawable/round_button"
         />
 
-    <Button
-        android:id="@+id/restartButton"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="Restart"
-        android:onClick="restartGame"
-        android:layout_margin="10dp"
-        android:padding="10dp"
-        android:background="@drawable/round_button"
-        />
+
 
     <Button
         android:id="@+id/mainMenuButton"
@@ -65,6 +61,25 @@
         android:layout_gravity="center_horizontal"
         android:text="Go back to main menu"
         android:onClick="mainMenu"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:background="@drawable/round_button"
+        />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="150dp">
+    <Button
+        android:id="@+id/restartButton"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Restart"
+        android:onClick="restartGame"
         android:layout_margin="10dp"
         android:padding="10dp"
         android:background="@drawable/round_button"
@@ -80,7 +95,9 @@
         android:padding="10dp"
         android:background="@drawable/settings"
         />
+    </LinearLayout>
 
 
 
-</LinearLayout>
+
+</RelativeLayout>
