@@ -6,13 +6,17 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 public class MainActivity extends AppCompatActivity {
+    private Animation animRotate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        animRotate = AnimationUtils.loadAnimation(this, R.anim.anim_rotate);
     }
 
     @Override
@@ -45,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     public void startMovesGame(View view) {
+        view.startAnimation(animRotate);
         Intent intent = new Intent(this, MovesGameActivity.class);
         startActivity(intent);
     }
@@ -55,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     public void viewHighScores(View view) {
+        view.startAnimation(animRotate);
         Intent intent = new Intent(this, HighScoreActivity.class);
         startActivity(intent);
     }
@@ -64,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     public void startTimedGame(View view) {
+        view.startAnimation(animRotate);
         Intent intent = new Intent(this, MovesGameActivity.class);
         intent.putExtra("timed", true);
         startActivity(intent);
@@ -74,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     public void settings(View view) {
+        view.startAnimation(animRotate);
         Intent intent = new Intent(this, DotsPreferenceActivity.class);
         startActivity(intent);
     }
