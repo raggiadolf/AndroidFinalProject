@@ -3,6 +3,8 @@ package com.mycompany.dotsproject;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,8 +32,11 @@ public class GameOverActivity extends AppCompatActivity {
     private String m_recordFile;
     private boolean m_isTimed;
 
-
     SharedPreferences m_sp;
+    private boolean m_useSound;
+
+    final SoundPool soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
+    int dotsgone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +45,7 @@ public class GameOverActivity extends AppCompatActivity {
 
         m_sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
-
+        dotsgone = soundPool.load(this, R.raw.dotsgone, 1);
         m_scoreView = (TextView) findViewById(R.id.finalScore);
         m_messageView = (TextView) findViewById(R.id.message);
 
@@ -105,8 +110,16 @@ public class GameOverActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        m_useSound = m_sp.getBoolean("sound", false);
+    }
+
+    @Override
     public void onBackPressed() {
-        // Send back to main activity
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     private void readRecords() {
@@ -151,6 +164,9 @@ public class GameOverActivity extends AppCompatActivity {
         switch(i) {
             case 0:
                 m_messageView.setText("Oh yeah! New Highscore!");
+                if (useSound()) {
+                    soundPool.play(dotsgone, 1.0f, 1.0f, 0, 0, 1.0f);
+                }
                 break;
             case 1:
                 m_messageView.setText("Nice! 2nd highest score!");
@@ -204,5 +220,9 @@ public class GameOverActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+    }
+
+    public boolean useSound() {
+        return m_useSound;
     }
 }

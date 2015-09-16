@@ -20,8 +20,8 @@ public class MovesGameActivity extends AppCompatActivity {
     private int m_boardSize = 6;
 
     private Vibrator m_vibrator;
-    private Boolean m_use_vibrator = false;
-    private Boolean m_use_sound = false;
+    private Boolean m_useVibrator = false;
+    private Boolean m_useSound = false;
     SharedPreferences m_sp;
 
     private BoardView m_bv;
@@ -41,6 +41,7 @@ public class MovesGameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         m_sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        final int dotsgone = soundPool.load(this, R.raw.dotsgone, 1);
 
         m_boardSize = m_sp.getBoolean("size", false) ? 8 : 6;
 
@@ -57,7 +58,6 @@ public class MovesGameActivity extends AppCompatActivity {
         Intent m_intent = getIntent();
         m_isTimed = m_intent.getBooleanExtra("timed", false);
 
-        final int sound = soundPool.load(this, R.raw.dotsgone, 1);
 
         m_vibrator = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -98,7 +98,7 @@ public class MovesGameActivity extends AppCompatActivity {
                     m_vibrator.vibrate(500);
                 }
                 if (useSound()) {
-                    soundPool.play(sound, 1.0f, 1.0f, 0, 0, 1.0f);
+                    soundPool.play(dotsgone, 1.0f, 1.0f, 0, 0, 1.0f);
                 }
 
                 if (m_moveCount <= 0 && !m_isTimed) {
@@ -114,8 +114,8 @@ public class MovesGameActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        m_use_vibrator = m_sp.getBoolean("vibrate", false);
-        m_use_sound = m_sp.getBoolean("sound", false);
+        m_useVibrator = m_sp.getBoolean("vibrate", false);
+        m_useSound = m_sp.getBoolean("sound", false);
 
         m_boardSize = m_sp.getBoolean("size", false) ? 8 : 6;
         if(m_boardSize != m_bv.getBoardSize()) {
@@ -207,11 +207,11 @@ public class MovesGameActivity extends AppCompatActivity {
     }
 
     public boolean useSound() {
-        return m_use_sound;
+        return m_useSound;
     }
 
     public boolean useVibrator() {
-        return m_use_vibrator;
+        return m_useVibrator;
     }
 
     public int getSize() {
