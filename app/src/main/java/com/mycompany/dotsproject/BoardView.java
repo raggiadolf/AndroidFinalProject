@@ -213,7 +213,6 @@ public class BoardView extends View {
         if(event.getAction() == MotionEvent.ACTION_DOWN) {
             m_cellPath.add(new Point(xToCol(x), yToRow(y)));
             m_startPoint.set(x, y);
-            Log.i("startPoint", "x: " + x + ", y: " + y);
         }
         else if(event.getAction() == MotionEvent.ACTION_MOVE) {
             if(!m_cellPath.isEmpty()) {
@@ -245,10 +244,6 @@ public class BoardView extends View {
             }
         }
         else if(event.getAction() == MotionEvent.ACTION_UP) {
-            m_startPoint.set(0, 0);
-            m_endPoint.set(0, 0);
-            invalidate();
-
             if(m_cellPath.size() > 1) {
                 for (Point p : m_cellPath) {
                     startAnimation(p.y, p.x);
@@ -258,6 +253,9 @@ public class BoardView extends View {
                 }
             }
             m_cellPath.clear();
+            
+            m_startPoint.set(0, 0);
+            m_endPoint.set(0, 0);
         }
         return true;
     }
