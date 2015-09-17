@@ -10,4 +10,8 @@
     <string name="title_activity_pause">PauseActivity</string>
     <string name="resetHighScores">Reset High scores</string>
     <string name="warning_message">Changing the board size will reset the current game</string>
+    <string name="help_timed_game">Timed game</string>
+    <string name="help_moves_game">Moves game</string>
+    <string name="help_high_scores">High scores</string>
+    <string name="help_settings">Settings</string>
 </resources>

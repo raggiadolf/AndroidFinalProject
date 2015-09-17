@@ -7,6 +7,14 @@
     >
 
     <Button
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:id="@+id/helpMainMenu"
+        android:onClick="displayTooltips"
+        android:background="@drawable/question_mark"
+        />
+
+    <Button
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:id="@+id/startMovesGame"
@@ -16,7 +24,8 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="160dp"
         android:layout_marginRight="70dp"
-        android:background="@drawable/button_image_moves"/>
+        android:background="@drawable/button_image_moves"
+        />
 
     <Button
         android:layout_width="70dp"
@@ -27,7 +36,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="70dp"
-        android:background="@drawable/button_image_timed"/>
+        android:background="@drawable/button_image_timed"
+        />
 
     <Button
         android:layout_width="70dp"
@@ -39,7 +49,8 @@
         android:layout_below="@+id/startTimedGame"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:background="@drawable/button_image_high_score"/>
+        android:background="@drawable/button_image_high_score"
+        />
 
     <Button
         android:layout_width="70dp"
@@ -50,6 +61,53 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginRight="70dp"
-        android:background="@drawable/settings"/>
+        android:background="@drawable/settings"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/help_timed_game"
+        android:id="@+id/helpTimedGame"
+        android:layout_above="@+id/startTimedGame"
+        android:layout_alignEnd="@+id/startTimedGame"
+        android:visibility="invisible"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/help_moves_game"
+        android:id="@+id/helpMovesGame"
+        android:layout_alignTop="@+id/helpTimedGame"
+        android:layout_alignStart="@+id/startMovesGame"
+        android:visibility="invisible"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/help_high_scores"
+        android:id="@+id/helpHighScores"
+        android:layout_below="@+id/highScoreButton"
+        android:layout_alignStart="@+id/highScoreButton"
+        android:visibility="invisible"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/help_settings"
+        android:id="@+id/helpSettings"
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/settingsButton"
+        android:layout_alignEnd="@+id/settingsButton"
+        android:layout_alignStart="@+id/settingsButton"
+        android:visibility="invisible"
+        />
 
 </RelativeLayout>
