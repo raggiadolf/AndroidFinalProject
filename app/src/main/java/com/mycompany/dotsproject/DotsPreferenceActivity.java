@@ -23,8 +23,6 @@ public class DotsPreferenceActivity extends PreferenceActivity {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
 
-        PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(this);
-
         Preference button = findPreference(getString(R.string.resetHighScores));
         button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -36,11 +34,12 @@ public class DotsPreferenceActivity extends PreferenceActivity {
 
         Intent m_intent = getIntent();
         if(m_intent.getBooleanExtra("ingame", false)) {
-            PreferenceCategory prefCat = new PreferenceCategory(this);
-            prefCat.setLayoutResource(R.layout.warning_message);
-            screen.addPreference(prefCat);
-            setPreferenceScreen(screen);
-            addPreferencesFromResource(R.xml.preferences);
+            Preference warningMessage = new Preference(this);
+            warningMessage.setKey("warningMessage");
+            warningMessage.setSelectable(false);
+            warningMessage.setPersistent(false);
+            warningMessage.setSummary(getString(R.string.warning_message));
+            ((PreferenceScreen)findPreference("prefScreen")).addPreference(warningMessage);
         }
     }
 
