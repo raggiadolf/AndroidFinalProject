@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.CountDownTimer;
 import android.os.Vibrator;
@@ -29,7 +30,7 @@ public class MovesGameActivity extends AppCompatActivity {
     private TextView m_scoreCountView;
     private TextView m_moveCountView;
 
-    private int m_moveCount = 5;
+    private int m_moveCount = 30;
     private int m_scoreCount = 0;
     private boolean m_isTimed = false;
     private long m_millisLeft = 30000;
@@ -99,7 +100,8 @@ public class MovesGameActivity extends AppCompatActivity {
                     m_vibrator.vibrate(500);
                 }
                 if (useSound()) {
-                    soundPool.play(dotsgone, 1.0f, 1.0f, 0, 0, 1.0f);
+                    soundPool.play(dotsgone, 0.99f, 0.99f, 0, 0, 1.0f);
+                    Log.i("soundpool", "playing");
                 }
 
                 if (m_moveCount <= 0 && !m_isTimed) {
