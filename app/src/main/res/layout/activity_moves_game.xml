@@ -62,7 +62,8 @@
         android:gravity="center"
         android:layout_below="@+id/linearLayout"
         android:layout_marginTop="53dp"
-         />
+        android:layout_centerHorizontal="true"
+        />
 
 
 
