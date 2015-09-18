@@ -8,6 +8,7 @@ import android.media.SoundPool;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,6 +45,7 @@ public class GameOverActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game_over);
 
         m_sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        m_useSound = m_sp.getBoolean("sound", false);
 
         highScoreSound = soundPool.load(this, R.raw.clapclap, 1);
         m_scoreView = (TextView) findViewById(R.id.finalScore);
@@ -164,7 +166,7 @@ public class GameOverActivity extends AppCompatActivity {
         switch(i) {
             case 0:
                 m_messageView.setText("Oh yeah! New Highscore!");
-                if (useSound()) {
+                if (m_useSound) {
                     soundPool.play(highScoreSound, 0.99f, 0.99f, 0, 0, 1.0f);
                 }
                 break;
@@ -182,6 +184,7 @@ public class GameOverActivity extends AppCompatActivity {
                 break;
             default:
                 m_messageView.setText("Better luck next time, no high score!");
+                Log.i("No high score", "not playing sound");
                 break;
         }
     }
@@ -223,6 +226,6 @@ public class GameOverActivity extends AppCompatActivity {
     }
 
     public boolean useSound() {
-        return m_useSound;
+        return this.m_useSound;
     }
 }

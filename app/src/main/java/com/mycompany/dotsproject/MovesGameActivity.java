@@ -101,7 +101,6 @@ public class MovesGameActivity extends AppCompatActivity {
                 }
                 if (useSound()) {
                     soundPool.play(dotsgone, 0.99f, 0.99f, 0, 0, 1.0f);
-                    Log.i("soundpool", "playing");
                 }
 
                 if (m_moveCount <= 0 && !m_isTimed) {
