@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +24,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 
+/**
+ * The activity that is launched when we finish a game.
+ * Handles writing the high score to local storage
+ */
 public class GameOverActivity extends AppCompatActivity {
     private int m_score;
     private ArrayList<Record> m_highScoreList = new ArrayList<>(5);
@@ -141,6 +144,10 @@ public class GameOverActivity extends AppCompatActivity {
         m_useSound = m_sp.getBoolean("sound", false);
     }
 
+    /**
+     * Send the user to main menu if back is pressed on game over
+     * instead of back to the last game played.
+     */
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, MainActivity.class);
@@ -148,6 +155,9 @@ public class GameOverActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * Read the high score records from local storage
+     */
     private void readRecords() {
         try {
             FileInputStream fis = openFileInput(m_recordFile);
@@ -160,12 +170,19 @@ public class GameOverActivity extends AppCompatActivity {
                 m_highScoreList.add(r);
             }
         } catch(IOException ioex) {
-            // TODO: Handle IOException
+            ioex.getMessage();
+            ioex.printStackTrace();
         } catch(ClassNotFoundException ex) {
-            // TODO: Handle ClassNotFoundException
+            ex.getMessage();
+            ex.printStackTrace();
+            // We should be printing these errors to logs instead of just out-ing them.
         }
     }
 
+    /**
+     * Write the new record list to local storage
+     * @param newRecords the new list of high scores(does not necessarily have to be modified)
+     */
     private void writeRecords(ArrayList<Record> newRecords) {
         try {
             FileOutputStream fos = openFileOutput(m_recordFile, Context.MODE_PRIVATE);
@@ -174,10 +191,16 @@ public class GameOverActivity extends AppCompatActivity {
             oos.close();
             fos.close();
         } catch(IOException ex) {
-            // TODO: Handle exception
+            ex.getMessage();
+            ex.printStackTrace();
+            // We should be printing these errors to logs instead of just out-ing them.
         }
     }
 
+    /**
+     * Find where this score we just got should go in the current high score list
+     * @return
+     */
     private int getScorePosition() {
         int i = 0;
         while(i < m_highScoreList.size() && m_highScoreList.get(i).getScore() > m_score) {
@@ -186,6 +209,12 @@ public class GameOverActivity extends AppCompatActivity {
         return i;
     }
 
+    /**
+     * Set the message according to what place on the high score list we just got.
+     * If we get first place we set the playSound variable to true, which informs the sound
+     * handler that he should play a sound.
+     * @param i the position that the current score got on the high score list
+     */
     private void setScoreMessage(int i) {
         switch(i) {
             case 0:
@@ -212,6 +241,10 @@ public class GameOverActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Add the current score to it's appropriate position on the high score
+     * @param i the position that the current score got on the high score list
+     */
     private void setScorePosition(int i) {
         if(m_highScoreList.isEmpty()) {
             m_highScoreList.add(new Record("Raggi", m_score, new Date()));
@@ -236,19 +269,26 @@ public class GameOverActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Start a new game of the same type we just finished.
+     * @param view the view that was just pressed
+     */
     public void replay(View view) {
         Intent intent = new Intent(this, MovesGameActivity.class);
         intent.putExtra("timed", m_isTimed);
         startActivity(intent);
     }
 
+    /**
+     * Go to main menu, set the flag FLAG_ACTIVITY_CLEAR_TOP for the
+     * intent that makes sure that this intent will be the only intent
+     * on the stack, since there is no reason for us to keep all of
+     * the previously finished games on the stack once we go back to main menu.
+     * @param view the view that was just pressed
+     */
     public void mainMenu(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
-    }
-
-    public boolean useSound() {
-        return this.m_useSound;
     }
 }
