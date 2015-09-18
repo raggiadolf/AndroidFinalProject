@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,6 +39,10 @@ public class GameOverActivity extends AppCompatActivity {
 
     final SoundPool soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
     int highScoreSound;
+    private boolean loaded = false;
+
+    private Handler soundHandler;
+    private boolean playSound = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +51,15 @@ public class GameOverActivity extends AppCompatActivity {
 
         m_sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         m_useSound = m_sp.getBoolean("sound", false);
-
         highScoreSound = soundPool.load(this, R.raw.clapclap, 1);
+
+        soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                loaded = true;
+            }
+        });
+
         m_scoreView = (TextView) findViewById(R.id.finalScore);
         m_messageView = (TextView) findViewById(R.id.message);
 
@@ -81,6 +93,18 @@ public class GameOverActivity extends AppCompatActivity {
         setScoreMessage(i);
 
         writeRecords(m_highScoreList);
+
+        soundHandler = new Handler();
+        soundHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(loaded) {
+                    if(playSound) {
+                        soundPool.play(highScoreSound, 0.99f, 0.99f, 0, 0, 1.0f);
+                    }
+                }
+            }
+        }, 2000);
     }
 
     @Override
@@ -167,7 +191,7 @@ public class GameOverActivity extends AppCompatActivity {
             case 0:
                 m_messageView.setText("Oh yeah! New Highscore!");
                 if (m_useSound) {
-                    soundPool.play(highScoreSound, 0.99f, 0.99f, 0, 0, 1.0f);
+                    playSound = true;
                 }
                 break;
             case 1:
@@ -184,7 +208,6 @@ public class GameOverActivity extends AppCompatActivity {
                 break;
             default:
                 m_messageView.setText("Better luck next time, no high score!");
-                Log.i("No high score", "not playing sound");
                 break;
         }
     }
