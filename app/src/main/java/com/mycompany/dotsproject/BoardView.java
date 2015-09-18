@@ -6,13 +6,11 @@ import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -22,7 +20,20 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * TODO: document your custom view class.
+ * This class represents the gameplay board in our app.
+ * It draws the dots and the path.
+ * We own a 2d array that holds the color value for each dot
+ * and then we own a second 2d array that holds the actual RectF objects
+ * that represent the dots.
+ *
+ * This is done so that the randomization and comparisons of colors
+ * is quick, since that is what we do most of.
+ *
+ * We then work with the RectF array when we are animating the dots,
+ * since we then need access to a particular dot to do animation on it.
+ *
+ * This view also handles the logic that checks whether we can select particular
+ * dots in a row and such.
  */
 public class BoardView extends View {
 
@@ -58,7 +69,6 @@ public class BoardView extends View {
         m_dotPaint.setStyle(Paint.Style.FILL);
         m_dotPaint.setAntiAlias(true);
 
-        m_pathPaint.setColor(Color.BLACK); // TODO: Do this in getColors() instead?
         m_pathPaint.setStrokeWidth(10);
         m_pathPaint.setStrokeJoin(Paint.Join.ROUND);
         m_pathPaint.setStrokeCap(Paint.Cap.ROUND);
@@ -78,7 +88,7 @@ public class BoardView extends View {
             }
         }
 
-        updateBoard();
+        setupBoard();
     }
 
     @Override
@@ -114,8 +124,12 @@ public class BoardView extends View {
     }
 
     /**
-     * TODO: Document
-     * @param canvas
+     * Goes through the 2d list of colors and colors each dot to its
+     * corresponding color.
+     * We also draw the path that we are currently tracking.
+     * We also draw a single line that follows the finger from a point
+     * of origin, which is the currently last selected dot.
+     * @param canvas the canvas we draw onto
      */
     @Override
     protected void onDraw(Canvas canvas) {
@@ -145,9 +159,18 @@ public class BoardView extends View {
     }
 
     /**
-     * TODO: Document, Refactor
-     * @param row
-     * @param col
+     * Sets up the animations that make our dots disappear and reapper.
+     * The first animation(that makes the dot disappear), also randomizes
+     * the color for that particular dot, once its animation ends. This
+     * is done so that the user won't notice when the dot changes color.
+     *
+     * The animation simply gradually changes the size of the dot down to
+     * zero, and then the second animation reverses that process.
+     * We need the dotWidth variable since we are working with ratios
+     * and not fixed sizes.
+     *
+     * @param row the row which the dot is in
+     * @param col the col which the dot is in
      */
     public void startAnimation(final int row, final int col) {
         final RectF dot = m_boardDots.get(row).get(col);
@@ -201,9 +224,25 @@ public class BoardView extends View {
     }
 
     /**
-     * TODO: DOCUMENT!
-     * @param event
-     * @return
+     * Handles the touch input from the user.
+     *
+     * Action down: We add the first path, and set
+     * the color of the path as that dot's color.
+     *
+     * Action move: We continue adding to the path
+     * if we are on an adjacent, same-colored dot.
+     * otherwise we draw a line from the last dot
+     * to the finger.
+     * We also pop from the path if we are backtracking
+     * on it.
+     *
+     * Action up: We handle the animations for the dots that are
+     * on the path. we also use our handler to inform our activity
+     * that we just performed a move, sending the score for that move
+     * to the activity.
+     *
+     * @param event the event that was just caught
+     * @return true iff we are the ones that handle the event.
      */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -224,16 +263,10 @@ public class BoardView extends View {
                 if (!m_cellPath.contains(new Point(col, row))
                         && checkIfCellIsLegal(row, col, last.y, last.x)) {
                     m_cellPath.add(new Point(col, row));
-                    if(context.useSound()) {
-                        // TODO: Play sound for path
-                    }
                 } else if(m_cellPath.size() > 1){ // Remove if backtracking
                     Point secondToLast = m_cellPath.get(m_cellPath.size() - 2);
                     if(row == secondToLast.y && col == secondToLast.x) {
                         m_cellPath.remove(m_cellPath.size() - 1);
-                        if(context.useSound()) {
-                            // TODO: Play sound for path removal
-                        }
                     }
                 }
                 m_centerx = colToX(m_cellPath.get(m_cellPath.size() - 1).x) + m_cellWidth / 2;
@@ -263,8 +296,7 @@ public class BoardView extends View {
     }
 
     /**
-     * TODO: We should make this method take in an indicator of theme
-     * and then choose the colors based off of that.
+     * Sets a list of colors that we use to randomize the board.
      * @return A list of integers which represent colors.
      */
     private ArrayList<Integer> getColors() {
@@ -280,9 +312,9 @@ public class BoardView extends View {
     }
 
     /**
-     * TODO: Document, refactor, rename to setupBoard?
+     * Sets up the board originally with random colors.
      */
-    private void updateBoard() {
+    private void setupBoard() {
         for(int row = 0; row < num_cells; row++) {
             for(int col = 0; col < num_cells; col++) {
                 if(m_boardDotColors.get(row).get(col) == null) {
@@ -292,22 +324,52 @@ public class BoardView extends View {
         }
     }
 
+    /**
+     * Helper function to convert x to column
+     * @param x the x-coordinate we want to convert
+     * @return the x converted to column
+     */
     private int xToCol(int x) {
         return (x - getPaddingLeft()) / m_cellWidth;
     }
 
+    /**
+     * Helper function to convert y to row
+     * @param y the y-coordinate we want to convert
+     * @return the y converted to row
+     */
     private int yToRow(int y) {
         return (y - getPaddingTop()) / m_cellHeight;
     }
 
+    /**
+     * Helper function to convert column to x-coordinate
+     * @param col the column we want to convert
+     * @return the column converted to a x-coordinate
+     */
     private int colToX(int col) {
         return col * m_cellWidth + getPaddingLeft();
     }
 
+    /**
+     * Helper function to convert row to y-coordinate
+     * @param row the row we want to convert
+     * @return the row converted to a y-coordinate
+     */
     private int rowToY(int row) {
         return row * m_cellHeight + getPaddingTop();
     }
 
+    /**
+     * Checks if the cell we are trying to place a path on is a legal cell.
+     * That is, is it out of bounds, does it have the same color, and is it
+     * adjacent to the last cell in the path.
+     * @param currRow The current row selected
+     * @param currCol The current column selected
+     * @param lastRow The last row selected
+     * @param lastCol The last column selected
+     * @return a true iff the cell is legal, otherwise false.
+     */
     private boolean checkIfCellIsLegal(int currRow, int currCol, int lastRow, int lastCol) {
         return currRow < num_cells && currRow >= 0 && currCol < num_cells && currCol >= 0
                 && m_boardDotColors.get(currRow).get(currCol).equals(m_boardDotColors.get(lastRow).get(lastCol))
@@ -315,18 +377,35 @@ public class BoardView extends View {
                 || (Math.abs(currCol - lastCol) == 1 && currRow == lastRow));
     }
 
+    /**
+     * Sets up the handler that talks to the activity
+     * @param handler our handler
+     */
     public void setMoveEventHandler( OnMoveEventHandler handler ) {
         m_moveHandler = handler;
     }
 
+    /**
+     *
+     * @return the size of the board
+     */
     public int getBoardSize() {
         return num_cells;
     }
 
+    /**
+     * Randomizes the color for a given dot
+     * @param row the row that the dot is in
+     * @param col the column that the dot is in
+     */
     private void randomizeDotColor(int row, int col) {
         m_boardDotColors.get(row).set(col, m_dotColors.get(new Random().nextInt(m_dotColors.size())));
     }
 
+    /**
+     * Shuffles the colors on the dots currently
+     * on the board
+     */
     public void shuffleBoard() {
         for(ArrayList<Integer> list : m_boardDotColors) {
             Collections.shuffle(list);
