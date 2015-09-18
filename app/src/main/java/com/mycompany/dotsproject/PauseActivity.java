@@ -10,6 +10,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+/**
+ * Handles the game when its paused.
+ */
 public class PauseActivity extends AppCompatActivity {
     private Animation m_animRotate;
 
@@ -86,22 +89,43 @@ public class PauseActivity extends AppCompatActivity {
         savedInstanceState.putLong("millisleft", m_millisleft);
     }
 
+    /**
+     * Finish this activity and return to the last
+     * @param view the view that was just pressed
+     */
     public void continueGame(View view) {
         finish();
     }
 
+    /**
+     * Starts a new game of the same type that is paused.
+     * @param view the view that was just pressed
+     */
     public void restartGame(View view) {
         Intent intent = new Intent(this, MovesGameActivity.class);
         intent.putExtra("timed", m_isTimed);
         startActivity(intent);
     }
 
+    /**
+     * Goes back to the main menu, passing the intent the flag
+     * FLAG_ACTIVITY_CLEAR_TOP, so that the main menu activity
+     * becomes the only activity on the stack, to make sure
+     * we're not keeping unnecessary activities on the stack.
+     * @param view the view that was just pressed
+     */
     public void mainMenu(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 
+    /**
+     * Starts the preference activity, passing the intent a variable
+     * that signifies that we just accessed the preferences from a game
+     * since we want to add a proper warning message in this case
+     * @param view the view that was just pressed
+     */
     public void settings(View view) {
         view.startAnimation(m_animRotate);
         Intent intent = new Intent(this, DotsPreferenceActivity.class);

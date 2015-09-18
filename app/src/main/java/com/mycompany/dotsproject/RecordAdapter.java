@@ -12,6 +12,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Handles populating the lists with our record data from local storage.
+ */
 public class RecordAdapter extends ArrayAdapter<Record> {
     private final Context context;
     private final List<Record> values;
@@ -27,13 +30,9 @@ public class RecordAdapter extends ArrayAdapter<Record> {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.row_layout, parent, false);
 
-        //TextView nameView = (TextView) rowView.findViewById(R.id.name);
-        //nameView.setText(values.get(position).getName());
-
         TextView scoreView = (TextView) rowView.findViewById(R.id.score);
         scoreView.setText("" + values.get(position).getScore());
 
-        // TODO: Format the date
         TextView dateView = (TextView) rowView.findViewById(R.id.date);
         SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         Date d =  values.get(position).getDate();
