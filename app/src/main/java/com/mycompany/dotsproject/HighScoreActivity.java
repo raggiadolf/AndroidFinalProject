@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -16,6 +15,17 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
+/**
+ * Handles displaying the highscore lists.
+ * There are four different high score lists that we have
+ * access to; for moves and timed games, and for both of those
+ * we have a 6x6 and 8x8 variants.
+ *
+ * We display both timed and moves, but size is decided simply
+ * by which is selected in the settings when we load up
+ * this activity, since that is most likely what the user
+ * is interested in.
+ */
 public class HighScoreActivity extends AppCompatActivity {
     private ListView m_moveListView;
     private ListView m_timeListView;
@@ -74,28 +84,6 @@ public class HighScoreActivity extends AppCompatActivity {
         return true;
     }
 
-    /**
-     * Starts a game
-     * TODO: Be able to tell the intent what kind of game it is, moves/timed
-     * @param view
-     */
-    public void startMovesGame(View view) {
-
-        Intent intent = new Intent(this, MovesGameActivity.class);
-        startActivity(intent);
-    }
-
-    /**
-     * TODO: Document
-     * @param view
-     */
-    public void startTimedGame(View view) {
-
-        Intent intent = new Intent(this, MovesGameActivity.class);
-        intent.putExtra("timed", true);
-        startActivity(intent);
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -113,6 +101,9 @@ public class HighScoreActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Reads the high score records from the local storage
+     */
     private void readRecords() {
         try {
             FileInputStream fis = openFileInput(m_recordFileMoves);
@@ -135,9 +126,12 @@ public class HighScoreActivity extends AppCompatActivity {
                 m_timeRecords.add(r);
             }
         } catch(IOException ioex) {
-            // TODO: Handle IOException
+            ioex.getMessage();
+            ioex.printStackTrace();
         } catch(ClassNotFoundException ex) {
-            // TODO: Handle ClassNotFoundException
+            ex.getMessage();
+            ex.printStackTrace();
+            // We should be printing these errors to logs instead of just out-ing them.
         }
     }
 }
