@@ -1,0 +1,54 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.mycompany.dotsproject.HighScoreActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:paddingTop="5dp"
+            android:id="@+id/startMovesGame"
+            android:onClick="startMovesGame"
+            android:background="@drawable/button_image_moves"
+            />
+        <ListView
+            android:id="@+id/timeRecords"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_alignParentTop="true">
+
+        </ListView>
+        <Button
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:paddingTop="5dp"
+            android:paddingRight="5dp"
+            android:id="@+id/startTimedGame"
+            android:onClick="startTimedGame"
+            android:background="@drawable/button_image_timed"
+            />
+        <ListView
+            android:id="@+id/moveRecords"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_alignParentTop="true">
+
+        </ListView>
+
+
+
+    </LinearLayout>
+
+</LinearLayout>
