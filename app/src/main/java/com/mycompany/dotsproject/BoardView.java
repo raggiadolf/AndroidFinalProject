@@ -270,11 +270,11 @@ public class BoardView extends View {
     private ArrayList<Integer> getColors() {
         ArrayList<Integer> colors = new ArrayList<>();
 
-        colors.add(Color.BLUE);
-        colors.add(Color.RED);
-        colors.add(Color.GREEN);
-        colors.add(Color.YELLOW);
-        colors.add(Color.CYAN);
+        colors.add(getResources().getColor(R.color.color1));
+        colors.add(getResources().getColor(R.color.color2));
+        colors.add(getResources().getColor(R.color.color3));
+        colors.add(getResources().getColor(R.color.color4));
+        colors.add(getResources().getColor(R.color.color5));
 
         return colors;
     }

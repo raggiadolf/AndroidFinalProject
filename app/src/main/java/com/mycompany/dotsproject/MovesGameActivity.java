@@ -30,7 +30,7 @@ public class MovesGameActivity extends AppCompatActivity {
     private TextView m_scoreCountView;
     private TextView m_moveCountView;
 
-    private int m_moveCount = 30;
+    private int m_moveCount = 5;
     private int m_scoreCount = 0;
     private boolean m_isTimed = false;
     private long m_millisLeft = 30000;

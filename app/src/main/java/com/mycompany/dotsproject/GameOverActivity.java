@@ -36,7 +36,7 @@ public class GameOverActivity extends AppCompatActivity {
     private boolean m_useSound;
 
     final SoundPool soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
-    int dotsgone;
+    int highScoreSound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +45,7 @@ public class GameOverActivity extends AppCompatActivity {
 
         m_sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
-        dotsgone = soundPool.load(this, R.raw.dotsgone, 1);
+        highScoreSound = soundPool.load(this, R.raw.clapclap, 1);
         m_scoreView = (TextView) findViewById(R.id.finalScore);
         m_messageView = (TextView) findViewById(R.id.message);
 
@@ -165,7 +165,7 @@ public class GameOverActivity extends AppCompatActivity {
             case 0:
                 m_messageView.setText("Oh yeah! New Highscore!");
                 if (useSound()) {
-                    soundPool.play(dotsgone, 1.0f, 1.0f, 0, 0, 1.0f);
+                    soundPool.play(highScoreSound, 0.99f, 0.99f, 0, 0, 1.0f);
                 }
                 break;
             case 1:

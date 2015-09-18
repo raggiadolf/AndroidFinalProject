@@ -3,8 +3,9 @@
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+
     android:orientation="vertical"
+    android:background="@color/background"
     tools:context="com.mycompany.dotsproject.PauseActivity">
 
     <LinearLayout
@@ -32,54 +33,61 @@
 
     </LinearLayout>
 
-
-
-    <Button
-        android:id="@+id/continueButton"
-        android:layout_width="200dp"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/continue_playing"
-        android:onClick="continueGame"
-        android:layout_margin="10dp"
-        android:padding="10dp"
-        android:background="@drawable/round_button"
-        />
+        android:layout_weight="5"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal">
+        <Button
+            android:id="@+id/continueButton"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/continue_playing"
+            android:onClick="continueGame"
+            android:layout_margin="10dp"
+            android:padding="10dp"
+            android:background="@drawable/round_button"
+            />
 
-    <Button
-        android:id="@+id/restartButton"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="Restart"
-        android:onClick="restartGame"
-        android:layout_margin="10dp"
-        android:padding="10dp"
-        android:background="@drawable/round_button"
-        />
+        <Button
+            android:id="@+id/restartButton"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Restart"
+            android:onClick="restartGame"
+            android:layout_margin="10dp"
+            android:padding="10dp"
+            android:background="@drawable/round_button"
+            />
 
-    <Button
-        android:id="@+id/mainMenuButton"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="Go back to main menu"
-        android:onClick="mainMenu"
-        android:layout_margin="10dp"
-        android:padding="10dp"
-        android:background="@drawable/round_button"
-        />
+        <Button
+            android:id="@+id/mainMenuButton"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/go_back_to_main_menu"
+            android:onClick="mainMenu"
+            android:layout_margin="10dp"
+            android:padding="10dp"
+            android:background="@drawable/round_button"
+            />
+
+    </LinearLayout>
+
 
     <Button
         android:id="@+id/settingsButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center_horizontal"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="bottom|right"
         android:onClick="settings"
         android:layout_margin="10dp"
         android:padding="10dp"
         android:background="@drawable/settings"
-        android:backgroundTint="@color/boardBackground"
+        android:backgroundTint="@color/background"
         />
 
 
