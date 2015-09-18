@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="0.2"
-        android:text="Score"
+        android:text="@string/score"
         android:layout_gravity="center_horizontal"
         android:paddingTop="75dp"
         android:textSize="20sp" />
@@ -21,10 +21,10 @@
     <TextView
         android:id="@+id/finalScore"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_weight="0.1"
-        android:layout_gravity="center_horizontal"
-        android:textSize="30sp" />
+        android:layout_gravity="center"
+        android:textSize="40sp" />
 
     <View
         android:layout_width="match_parent"
@@ -35,10 +35,11 @@
     <TextView
         android:id="@+id/message"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_weight="0.1"
         android:textSize="20sp"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
         />
 
     <View
@@ -49,19 +50,23 @@
 
     <Button
         android:id="@+id/replayButton"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="0dp"
-        android:layout_weight="0.1"
+        android:layout_weight="0.25"
         android:layout_gravity="center_horizontal"
-        android:text="Play again"
+        android:text="@string/play_again"
         android:onClick="replay"
+        android:background="@drawable/round_button"
+        android:layout_margin="10dp"
         />
     <Button
         android:id="@+id/mainMenuButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="0dp"
+        android:layout_weight="0.25"
         android:layout_gravity="center_horizontal"
-        android:text="Go back to main menu"
+        android:background="@drawable/round_button"
+        android:text="@string/go_back_to_main_menu"
         android:onClick="mainMenu"
         />
 
