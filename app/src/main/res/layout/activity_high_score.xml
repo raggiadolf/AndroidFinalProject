@@ -8,44 +8,26 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="5dp"
-        android:paddingTop="10dp"
-        android:paddingLeft="10dp"
-        >
+        android:layout_height="wrap_content">
 
-        <Button
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:gravity="center"
-            android:id="@+id/startMovesGame"
-            android:onClick="startMovesGame"
-            android:background="@drawable/button_image_moves"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_weight="2"
-            android:text="@string/help_timed_game"
-            />
-
-        <Button
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:id="@+id/startTimedGame"
-            android:onClick="startTimedGame"
-            android:background="@drawable/button_image_timed"
-            />
         <TextView
             android:layout_width="0dp"
             android:layout_height="30dp"
+            android:layout_weight="1"
+            android:text="@string/help_timed_game"
             android:gravity="center"
-            android:layout_weight="2"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
             android:text="@string/help_moves_game"
+            android:gravity="center"
             />
 
     </LinearLayout>
+
 
     <View
         android:layout_width="match_parent"
@@ -67,14 +49,6 @@
 
         </ListView>
 
-        <TextView
-            android:id="@+id/boardSize"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:layout_gravity="bottom"
-            android:layout_weight="0" />
-
         <ListView
             android:id="@+id/moveRecords"
             android:layout_width="0dp"
@@ -84,8 +58,22 @@
 
         </ListView>
 
-
-
     </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/boardSize"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+            />
+
+    </RelativeLayout>
 
 </LinearLayout>
