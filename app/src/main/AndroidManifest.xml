@@ -27,10 +27,6 @@
             android:label="@string/title_activity_high_score" >
         </activity>
         <activity
-            android:name=".PowerUpsActivity"
-            android:label="@string/title_activity_power_ups" >
-        </activity>
-        <activity
             android:name=".DotsPreferenceActivity"
             android:label="@string/app_name" >
         </activity>
