@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 public class HighScoreActivity extends AppCompatActivity {
     private ListView m_moveListView;
     private ListView m_timeListView;
+    private TextView m_boardSizeView;
 
     private ArrayList<Record> m_moveRecords = new ArrayList<>();
     private ArrayList<Record> m_timeRecords = new ArrayList<>();
@@ -40,13 +42,16 @@ public class HighScoreActivity extends AppCompatActivity {
         m_recordFileMoves = m_sp.getBoolean("size", false) ? "recordseight.ser" : "recordssix.ser";
         m_recordFileTimed = m_sp.getBoolean("size", false) ? "recordseighttimed.ser" : "recordssixtimed.ser";
 
-        m_moveListView = (ListView) findViewById(R.id.moveRecords);
-        m_timeListView = (ListView) findViewById(R.id.timeRecords);
+        m_moveListView  = (ListView) findViewById(R.id.moveRecords);
+        m_timeListView  = (ListView) findViewById(R.id.timeRecords);
+        m_boardSizeView = (TextView) findViewById(R.id.boardSize);
 
         m_moveAdapter = new RecordAdapter(this, m_moveRecords);
         m_timeAdapter = new RecordAdapter(this, m_timeRecords);
         m_moveListView.setAdapter(m_moveAdapter);
         m_timeListView.setAdapter(m_timeAdapter);
+
+        m_boardSizeView.setText(m_sp.getBoolean("size", false) ? "8x8" : "6x6");
     }
 
     @Override
