@@ -14,7 +14,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 /**
- * Created by ragnaradolf on 13/09/15.
+ * Handles our preferences.
  */
 public class DotsPreferenceActivity extends PreferenceActivity {
 
@@ -43,6 +43,10 @@ public class DotsPreferenceActivity extends PreferenceActivity {
         }
     }
 
+    /**
+     * Empties the highscore on local storage.
+     * We simply store an empty array, which overwrites the records in local storage.
+     */
     private void emptyRecords() {
         try {
             FileOutputStream fossix = openFileOutput("recordssix.ser", Context.MODE_PRIVATE);
@@ -54,7 +58,9 @@ public class DotsPreferenceActivity extends PreferenceActivity {
             ObjectOutputStream ooseight = new ObjectOutputStream(foseight);
             ooseight.writeObject(new ArrayList<Record>());
         } catch(IOException ex) {
-            // TODO: Handler exception
+            // This should be logged instead of printed.
+            ex.printStackTrace();
+            ex.getMessage();
         }
     }
 }
