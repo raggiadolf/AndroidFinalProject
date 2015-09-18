@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -21,57 +21,51 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="2"
+            android:text="moves 30"
             />
         <TextView
             android:id="@+id/scoreCount"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="2"
+            android:text="score 30"
             />
 
     </LinearLayout>
+
     <com.mycompany.dotsproject.BoardView
         android:id="@+id/boardview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="1pt"
-        android:layout_margin="10pt"
         android:background="@drawable/round_table"
-        />
+        android:layout_marginLeft="10pt"
+        android:layout_marginRight="10pt"
+        android:layout_below="@+id/moves_score"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/shuffleButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/shuffle"
+        android:onClick="shuffleBoard"
+        android:layout_gravity="right"
+        android:layout_alignTop="@+id/moves_score"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:id="@+id/pauseButton"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/pause"
+        android:onClick="pauseGame"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
 
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="30dp"
-        android:id="@+id/linearLayout"
-        android:orientation="vertical">
-        <Button
-            android:id="@+id/pauseButton"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:background="@drawable/pause"
-            android:onClick="pauseGame"
-            android:gravity="center"
-            android:layout_below="@+id/linearLayout"
-            android:layout_marginTop="53dp"
-            />
-        <Button
-            android:id="@+id/shuffleButton"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/shuffle"
-            android:onClick="shuffleBoard"
-            android:layout_gravity="top|right"
-            />
-
-
-    </LinearLayout>
-
-
-
-</LinearLayout>
+</RelativeLayout>
 
 
 
