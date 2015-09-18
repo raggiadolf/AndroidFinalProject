@@ -17,5 +17,7 @@
     <string name="go_back_to_main_menu">Go back to main menu</string>
     <string name="restart">Restart</string>
     <string name="continue_playing">Continue playing</string>
+    <string name="play_again">Play again</string>
+    <string name="score">Score</string>
 
 </resources>
