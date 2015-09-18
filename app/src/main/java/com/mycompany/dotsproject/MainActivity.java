@@ -3,7 +3,6 @@ package com.mycompany.dotsproject;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,6 +10,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+/**
+ * Handles the main menu, which includes 5 buttons and some hidden text views.
+ */
 public class MainActivity extends AppCompatActivity {
     private Animation m_animRotate;
     private Animation m_animAlpha;
@@ -58,9 +60,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Starts a game
-     * TODO: Be able to tell the intent what kind of game it is, moves/timed
-     * @param view
+     * Starts a moves game
+     * @param view the view that was just pressed
      */
     public void startMovesGame(View view) {
         view.startAnimation(m_animRotate);
@@ -70,8 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Views the highscores
-     * TODO: Figure out how to store the high scores in local storage.
-     * @param view
+     * @param view the view that was just pressed
      */
     public void viewHighScores(View view) {
         view.startAnimation(m_animRotate);
@@ -80,8 +80,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * TODO: Document
-     * @param view
+     * Starts a timed game
+     * Passes the intent a boolean named timed that signifies that it should
+     * treat the activity started as timed.
+     * @param view the view that was just pressed
      */
     public void startTimedGame(View view) {
         view.startAnimation(m_animRotate);
@@ -91,8 +93,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * TODO: Document
-     * @param view
+     * Starts the preference activity
+     * @param view the view that was just pressed
      */
     public void settings(View view) {
         view.startAnimation(m_animRotate);
@@ -101,8 +103,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * TOOD: Document
-     * @param view
+     * Displays simple tooltips for the buttons, which are just text elements.
+     * They are displayed for 3 seconds.
+     * @param view the view that was just pressed
      */
     public void displayTooltips(View view) {
         m_helpTimedGame.startAnimation(m_animAlpha);
