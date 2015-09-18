@@ -4,35 +4,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-    <ImageView
-        android:id="@+id/row_player"
-        android:layout_width="0dp"
-        android:layout_height="70dp"
-        android:layout_weight="1"
-        android:padding="10dp"
-        />
-   <!-- <TextView
-        android:id="@+id/name"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:textSize="20sp"
-        />-->
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/row_player"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:padding="10dp"
+            />
+        <!-- <TextView
+             android:id="@+id/name"
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:layout_weight="2"
+             android:textSize="20sp"
+             />-->
 
-    <TextView
-        android:id="@+id/date"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:textColor="@color/dateColor"
-        />
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="left"
+            android:gravity="bottom"
+            android:textColor="@color/dateColor"
+            android:textSize="11dp"
+            />
+
+    </LinearLayout>
+
 
     <TextView
         android:id="@+id/score"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:gravity="center"
         android:textSize="40sp"
         android:textColor="@color/highScore"
         android:textAlignment="center"
