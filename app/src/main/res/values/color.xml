@@ -2,8 +2,8 @@
 <resources>
     <color name="highScore">#622769</color>
     <color name="dateColor">#ea0d2c2e</color>
-    <color name="pauseColor">#0b691a</color>
-    <color name="pressedPause">#80ff64</color>
+    <color name="pauseColor">#666666</color>
+    <color name="pressedPause">#a8a8a8</color>
     <color name="background">#f4fffcd7</color>
     <color name="color1">#ff4b55</color>
     <color name="color2">#9a429a</color>
