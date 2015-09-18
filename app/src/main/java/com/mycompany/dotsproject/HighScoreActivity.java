@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 
 import java.io.FileInputStream;
@@ -66,6 +67,28 @@ public class HighScoreActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_high_score, menu);
         return true;
+    }
+
+    /**
+     * Starts a game
+     * TODO: Be able to tell the intent what kind of game it is, moves/timed
+     * @param view
+     */
+    public void startMovesGame(View view) {
+
+        Intent intent = new Intent(this, MovesGameActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * TODO: Document
+     * @param view
+     */
+    public void startTimedGame(View view) {
+
+        Intent intent = new Intent(this, MovesGameActivity.class);
+        intent.putExtra("timed", true);
+        startActivity(intent);
     }
 
     @Override

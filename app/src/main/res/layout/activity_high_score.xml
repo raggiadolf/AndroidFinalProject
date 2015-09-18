@@ -3,24 +3,73 @@
     tools:context="com.mycompany.dotsproject.HighScoreActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:orientation="vertical" >
 
-    <ListView
-        android:id="@+id/moveRecords"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:layout_alignParentTop="true">
+        android:orientation="horizontal"
+        android:layout_marginBottom="5dp"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        >
 
-    </ListView>
+        <Button
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:id="@+id/startMovesGame"
+            android:onClick="startMovesGame"
+            android:background="@drawable/button_image_moves"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_weight="2"
+            android:text="@string/help_timed_game"
+            />
 
-    <ListView
-        android:id="@+id/timeRecords"
-        android:layout_width="0dp"
+        <Button
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/startTimedGame"
+            android:onClick="startTimedGame"
+            android:background="@drawable/button_image_timed"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:layout_weight="2"
+            android:text="@string/help_moves_game"
+            />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:layout_alignParentTop="true">
+        android:orientation="horizontal">
+        <ListView
+            android:id="@+id/timeRecords"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_alignParentTop="true">
 
-    </ListView>
+        </ListView>
+        <ListView
+            android:id="@+id/moveRecords"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_alignParentTop="true">
+
+        </ListView>
+
+
+
+    </LinearLayout>
 
 </LinearLayout>
