@@ -6,9 +6,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 public class PauseActivity extends AppCompatActivity {
+    private Animation m_animRotate;
 
     private int m_moveCount;
     private int m_scoreCount;
@@ -22,6 +25,7 @@ public class PauseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pause);
+        m_animRotate = AnimationUtils.loadAnimation(this, R.anim.anim_rotate);
 
         if (savedInstanceState != null) {
             m_scoreCount = savedInstanceState.getInt("score");
@@ -99,6 +103,7 @@ public class PauseActivity extends AppCompatActivity {
     }
 
     public void settings(View view) {
+        view.startAnimation(m_animRotate);
         Intent intent = new Intent(this, DotsPreferenceActivity.class);
         intent.putExtra("ingame", true);
         startActivity(intent);

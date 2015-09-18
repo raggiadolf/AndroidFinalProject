@@ -15,9 +15,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 public class MovesGameActivity extends AppCompatActivity {
+    private Animation m_animRotate;
 
     private int m_boardSize = 6;
 
@@ -48,6 +51,7 @@ public class MovesGameActivity extends AppCompatActivity {
         m_boardSize = m_sp.getBoolean("size", false) ? 8 : 6;
 
         setContentView(R.layout.activity_moves_game);
+        m_animRotate = AnimationUtils.loadAnimation(this, R.anim.anim_rotate);
 
         if (savedInstanceState != null) {
             m_scoreCount = savedInstanceState.getInt("score");
@@ -231,10 +235,12 @@ public class MovesGameActivity extends AppCompatActivity {
 
 
     public void pauseGame(View view) {
+        view.startAnimation(m_animRotate);
         onBackPressed();
     }
 
     public void shuffleBoard(View view) {
+        view.startAnimation(m_animRotate);
         m_bv.shuffleBoard();
     }
 }
