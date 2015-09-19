@@ -55,6 +55,7 @@
         android:layout_weight="0.25"
         android:layout_gravity="center_horizontal"
         android:text="@string/play_again"
+        android:textColor="@color/background"
         android:onClick="replay"
         android:background="@drawable/round_button"
         android:layout_margin="10dp"
@@ -67,6 +68,7 @@
         android:layout_gravity="center_horizontal"
         android:background="@drawable/round_button"
         android:text="@string/go_back_to_main_menu"
+        android:textColor="@color/background"
         android:onClick="mainMenu"
         />
 
